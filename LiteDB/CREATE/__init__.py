@@ -1,6 +1,6 @@
 import json
 
-from LiteDB.CREATE.CREATE import _db_exists
+from LiteDB.CREATE.CREATE import _db_exists, _table_exists
 from LiteDB._funcs import _open_db, _save_db
 
 
@@ -26,13 +26,13 @@ from LiteDB._funcs import _open_db, _save_db
 #
 # Example (Table does not exist):
 #     >>> from CREATE import create_table
-#     >>> create_table(db_name)
+#     >>> create_table(db_name, table_name, collections)
 #     'Table table_name with collections: col, col was created.'
 #
 # Example (Table exists)::
 #
 #     >>> from CREATE import create_table
-#     >>> create_table(db_name)
+#     >>> create_table(db_name, table_name, collections)
 #     'Table with this name has already existed'
 
 
@@ -63,7 +63,7 @@ def create_table(db_name: str, table_name: str, collections: list) -> None:
     """
 
     DATABASE = _open_db(db_name=db_name)
-    if DATABASE[table_name]:
+    if _table_exists(table_name=table_name, DB=DATABASE):
         print(Exception(f'Table with name {table_name} has already existed.'))
     else:
         DATABASE[table_name] = {}

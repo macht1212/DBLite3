@@ -10,3 +10,15 @@ def _db_exists(db_name: str) -> bool:
     if os.path.exists(f'{db_name}.json'):
         return True
     return False
+
+
+def _table_exists(table_name: str, DB: dict) -> bool:
+    """
+    The function checks if the table exists in the database, returns False if it doesn't exist.
+    :param table_name:
+    :param DB:
+    :return:
+    """
+    if DB[table_name]:
+        return True
+    return False
