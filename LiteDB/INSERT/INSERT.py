@@ -7,5 +7,5 @@ def _value_in(DATABASE: dict, table_name: str, collection: str) -> bool:
     :return: True if the first entry in the collection exists
     """
     if DATABASE[table_name][collection]['values']:
-        return True
-    return False
+        return False
+    return True

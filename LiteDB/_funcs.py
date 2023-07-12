@@ -3,9 +3,9 @@ import json
 
 def _open_db(db_name: str) -> dict:
     """
-
-    :param db_name:
-    :return:
+    The function parses the json file and returns a dictionary
+    :param db_name: the name of the database that is planned to be opened
+    :return: dict
     """
     with open(f'{db_name}.json', 'r') as db:
         info = db.read()
@@ -14,10 +14,10 @@ def _open_db(db_name: str) -> dict:
 
 def _save_db(db_name: str, DB: dict) -> None:
     """
-
-    :param db_name:
-    :param DB:
-    :return:
+    The function translates the dictionary into a json file
+    :param db_name: the name of the database that is planned to be saved
+    :param DB: dict of the database that is planned to be saved
+    :return: None
     """
     with open(f'{db_name}.json', 'w') as db:
         db.write(str(json.dumps(DB)))

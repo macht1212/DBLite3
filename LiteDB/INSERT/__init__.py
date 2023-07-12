@@ -33,7 +33,7 @@ def insert_one(db_name: str, table_name: str, collection: str, value) -> None:
         DATABASE[table_name][collection]['values'] = [(1, value)]
     else:
         count = DATABASE[table_name][collection]['values'][-1][0]
-        DATABASE[table_name][collection]['values'].append((count + 1, value))
+        DATABASE[table_name][collection]['values'].append((count+1, value))
 
     _save_db(db_name=db_name, DB=DATABASE)
 
@@ -55,5 +55,5 @@ def insert_many(db_name: str, table_name: str, collection: str, values: list) ->
     else:
         count = DATABASE[table_name][collection]['values'][-1][0]
         for i, e in enumerate(values):
-            DATABASE[table_name][collection]['values'] = [(count + i, values[i])]
+            DATABASE[table_name][collection]['values'] = [[count + i, values[i]]]
     _save_db(db_name=db_name, DB=DATABASE)
