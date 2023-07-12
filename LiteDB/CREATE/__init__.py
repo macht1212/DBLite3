@@ -1,5 +1,3 @@
-import json
-
 from LiteDB.CREATE.CREATE import _db_exists, _table_exists
 from LiteDB._funcs import _open_db, _save_db
 
@@ -11,13 +9,13 @@ from LiteDB._funcs import _open_db, _save_db
 # Example (DB does not exist)::
 #
 #     >>> from CREATE import create_db
-#     >>> create_db(db_name)
+#     >>> create_db(db_name='new_db')
 #     'DataBase db_name was created.'
 #
 # Example (DB exists)::
 #
 #     >>> from CREATE import create_db
-#     >>> create_db(db_name)
+#     >>> create_db(db_name='new_db')
 #     'DATABASE with this name has already existed'
 #
 # To create table  you need call .create_table method from CREATE module (from CREATE import create_table)
@@ -26,13 +24,13 @@ from LiteDB._funcs import _open_db, _save_db
 #
 # Example (Table does not exist):
 #     >>> from CREATE import create_table
-#     >>> create_table(db_name, table_name, collections)
+#     >>> create_table(db_name='new_db', table_name='table', collections='coll')
 #     'Table table_name with collections: col, col was created.'
 #
 # Example (Table exists)::
 #
 #     >>> from CREATE import create_table
-#     >>> create_table(db_name, table_name, collections)
+#     >>> create_table(db_name='new_db', table_name='table', collections='coll')
 #     'Table with this name has already existed'
 
 
@@ -68,6 +66,5 @@ def create_table(db_name: str, table_name: str, collections: list) -> None:
     else:
         DATABASE[table_name] = {}
         for collection in collections:
-            DATABASE[table_name][collection] = {'values': []}
-
+            DATABASE[table_name][collection] = {'values': None}
     _save_db(db_name=db_name, DB=DATABASE)

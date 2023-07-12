@@ -1,20 +1,16 @@
 
 # LiteDB
 
-A simple NoSQL database for simple Projects.  
-
-
-
-## Documentation
-
 LiteDB is NoSQL database.
 LiteDB could be used as simple DB for simple projects.
 This DB creates file with file extension .json (JavaScript Object Notification).
 
+## Documentation
+
 All information is stored in tables which contain collections.
 
 ### CREATE
-To create new DataBase you need call .create_db method from CREATE module 
+To create new DataBase you need call *.create_db* method from CREATE module 
 ```python
 from LiteDB.CREATE import create_db
 ```
@@ -33,7 +29,7 @@ Example (DB exists)::
     >>> create_db(db_name)
     'DATABASE with this name has already existed'
 
-To create table  you need call .create_table method from CREATE module 
+To create table  you need call *.create_table* method from CREATE module 
 
 ```python
 from LiteDB.CREATE import create_table
@@ -54,6 +50,28 @@ Example (Table exists)::
     'Table with this name has already existed'
 
 ### INSERT
+
+To insert one new value to DataBase you need call *.insert_one* method from INSERT module 
+```python
+from LiteDB.INSERT import insert_one
+```
+and pass to method db name, table name, collection and value.
+
+Example::
+
+    >>> from LiteDB.INSERT import insert_one
+    >>> insert_one(db_name='new_db', table_name='table', collection='coll', value='some value')
+
+To insert many new values to DataBase you need call *.insert_many* method from INSERT module 
+```python
+from LiteDB.INSERT import insert_many
+```
+and pass to method db name, table name, collection and values.
+
+Example::
+
+    >>> from LiteDB.INSERT import insert_many
+    >>> insert_one(db_name='new_db', table_name='table', collection='coll', values=['some value'])
 
 ### UPDATE
 
@@ -81,5 +99,5 @@ Install my-project with pip
 
 ## Lessons Learned
 
-What did you learn while building this project? What challenges did you face and how did you overcome them?
+
 
