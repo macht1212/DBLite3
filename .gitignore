@@ -1,0 +1,5 @@
+/.idea
+*.json
+main.py
+venv
+*/__pycache__
