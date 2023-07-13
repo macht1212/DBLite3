@@ -75,6 +75,67 @@ Example::
 
 ### UPDATE
 
+To update values in the database, use the UPDATE module, which implements four methods to update data by their ID or 
+by their old name.
+
+To update a single value by its ID, you need to import the *.update_value_by_id* method from the UPDATE module.
+```python
+from LiteDB.UPDATE import update_value_by_id
+```
+
+In this method, you must pass the name of the database, the name of the table, the name of the collection and the identifier of the value to be replaced, as well as the new value.
+
+Example::
+    
+    >>> from LiteDB.UPDATE import update_value_by_id
+    >>> update_value_by_id(db_name='new', table_name='table', collection='coll', id=1, value='some new value')
+    
+To update a few values by their ID, you need to import the *.update_values_by_id* method from the UPDATE module.
+```python
+from LiteDB.UPDATE import update_values_by_id
+```
+
+In this method, you must pass the name of the database, the name of the 
+table, the name of the collection and the identifiers of the values (list) to be replaced, as well as the new 
+values (list).
+
+Example::
+    
+    >>> from LiteDB.UPDATE import update_values_by_id
+    >>> update_values_by_id(db_name='new', table_name='table', collection='coll', id=[1, 2], 
+                            value=['some new value', 'second new value'])
+                
+To update a single value by its old name, you need to import the *.update_new_value_by_old_value* method from the UPDATE 
+module. 
+```python
+from LiteDB.UPDATE import update_new_value_by_old_value
+```
+
+In this method, you must pass the name of the 
+database, the name of the table, the name of the collection and the old name of the value to be replaced, as well as 
+the new value.
+
+Example::
+    
+    >>> from LiteDB.UPDATE import update_new_value_by_old_value
+    >>> update_value_by_id(db_name='new', table_name='table', collection='coll',
+                            old_value='old', new_value='some new value')
+    
+To update a few values by their old names, you need to import the *.update_new_values_by_old_values* method from the 
+UPDATE module. 
+```python
+from LiteDB.UPDATE import update_new_values_by_old_values
+```
+In this method, you must pass the name of 
+the database, the name of the table, the name of the collection and the old names of the values (list) to be replaced,
+as well as the new values (list).
+
+Example::
+    
+    >>> from LiteDB.UPDATE import update_new_values_by_old_values
+    >>> update_new_values_by_old_values(db_name='new', table_name='table', collection='coll', 
+                            old_value=['old1', 'old2'], new_value=['some new value', 'second new value'])
+
 ### ALTER
 
 ### DROP/DELETE
