@@ -244,6 +244,18 @@ Example::
     >>> drop_db(db_name='new')
 
 
+#### ADDITION INFO
+```python
+def drop_db(db_name: str) -> None:
+    """
+    The function deletes the database. IMPORTANT! Using this feature will result in data loss
+    :param db_name: the name of the database to be dropped
+    :return: None
+    """
+    pass
+```
+
+
 To drop table from database, you need to import the *.drop_db* method from the DROP module.
 ```python
 from LiteDB.DROP import drop_table
@@ -257,6 +269,19 @@ Example::
     >>> from LiteDB.DROP import drop_table
     >>> drop_db(db_name='new', table_name='table')
 
+#### ADDITION INFO
+```python
+def drop_table(db_name: str, table_name: str) -> None:
+    """
+    The function deletes the table from database. IMPORTANT! Using this feature will result in data loss
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be dropped
+    :return: None
+    """
+    pass
+```
+
+
 To drop collection from database, you need to import the *.drop_collection* method from the DROP module.
 ```python
 from LiteDB.DROP import drop_collection
@@ -269,6 +294,20 @@ Example::
 
     >>> from LiteDB.DROP import drop_collection
     >>> drop_db(db_name='new', table_name='table', collection='coll')
+
+#### ADDITION INFO
+```python
+def drop_collection(db_name: str, table_name: str, collection: str) -> None:
+    """
+    The function deletes the collection from database. IMPORTANT! Using this feature will result in data loss
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be modified
+    :param collection: the name of the collection to be dropped
+    :return: None
+    """
+    pass
+```
+
 
 ## Installation
 
