@@ -50,15 +50,31 @@ from LiteDB._funcs import _open_db, _save_db
 def update_value_by_id(db_name: str, table_name: str, collection: str, id: int, value) -> None:
     """
     The function updates the single value by the given identifier
-    :param db_name:
-    :param table_name:
-    :param collection:
-    :param id:
-    :param value:
-    :return:
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be modified
+    :param collection: the name of the collection to be modified
+    :param id: identifier of the value to be modified
+    :param value: new value
+    :return: None
     """
     DATABASE = _open_db(db_name=db_name)
     DATABASE[table_name][collection]['values'][id - 1][1] = value
+    _save_db(db_name=db_name, DB=DATABASE)
+
+
+def update_values_by_id(db_name: str, table_name: str, collection: str, id: list, values: list) -> None:
+    """
+    The function updates the many values by the given identifiers
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be modified
+    :param collection: the name of the collection to be modified
+    :param id:
+    :param values:
+    :return:
+    """
+    DATABASE = _open_db(db_name=db_name)
+    for i, id in enumerate(id):
+        DATABASE[table_name][collection]['values'][id - 1][1] = values[i]
     _save_db(db_name=db_name, DB=DATABASE)
 
 
@@ -70,19 +86,6 @@ def update_new_value_by_old_value(db_name: str, table_name: str, collection: str
     :param collection:
     :param old_value:
     :param new_value:
-    :return:
-    """
-    pass
-
-
-def update_values_by_id(db_name: str, table_name: str, collection: str, id: list, values: list) -> None:
-    """
-
-    :param db_name:
-    :param table_name:
-    :param collection:
-    :param id:
-    :param values:
     :return:
     """
     pass

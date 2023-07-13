@@ -199,6 +199,47 @@ Example::
 
 ### DROP/DELETE
 
+To drop the database, table or collection, use the DROP module.
+
+To drop database, you need to import the *.drop_db method* from the DROP module. 
+```python
+from LiteDB.DROP import drop_db
+```
+
+In this method, you must pass the name of the database.
+
+Example::
+
+    >>> from LiteDB.DROP import drop_db
+    >>> drop_db(db_name='new')
+
+
+To drop table from database, you need to import the *.drop_db* method from the DROP module.
+```python
+from LiteDB.DROP import drop_table
+```
+
+In this method, you must pass the name of the database and the name of the
+table.
+
+Example::
+
+    >>> from LiteDB.DROP import drop_table
+    >>> drop_db(db_name='new', table_name='table')
+
+To drop collection from database, you need to import the *.drop_collection* method from the DROP module.
+```python
+from LiteDB.DROP import drop_collection
+```
+
+In this method, you must pass the name of the database, the name of the
+table and the name of the collection.
+
+Example::
+
+    >>> from LiteDB.DROP import drop_collection
+    >>> drop_db(db_name='new', table_name='table', collection='coll')
+
 ## Installation
 
 Install my-project with pip
