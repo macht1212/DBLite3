@@ -149,6 +149,7 @@ Example::
     >>> from LiteDB.UPDATE import update_value_by_id
     >>> update_value_by_id(db_name='new', table_name='table', collection='coll', id=1, value='some new value')
 
+#### ADDITION INFO
 ```python
 def update_value_by_id(db_name: str, table_name: str, collection: str, id: int, value) -> None:
     """
@@ -177,7 +178,7 @@ Example::
     >>> update_values_by_id(db_name='new', table_name='table', collection='coll', id=[1, 2], 
                             value=['some new value', 'second new value'])
       
-
+#### ADDITION INFO
 ```python
 def update_values_by_id(db_name: str, table_name: str, collection: str, id: list, values: list) -> None:
     """
