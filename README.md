@@ -148,7 +148,20 @@ Example::
     
     >>> from LiteDB.UPDATE import update_value_by_id
     >>> update_value_by_id(db_name='new', table_name='table', collection='coll', id=1, value='some new value')
-    
+
+```python
+def update_value_by_id(db_name: str, table_name: str, collection: str, id: int, value) -> None:
+    """
+    The function updates the single value by the given identifier
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be modified
+    :param collection: the name of the collection to be modified
+    :param id: identifier of the value to be modified
+    :param value: new value
+    :return: None
+    """
+    pass
+```    
 To update a few values by their ID, you need to import the *.update_values_by_id* method from the UPDATE module.
 ```python
 from LiteDB.UPDATE import update_values_by_id
@@ -163,9 +176,24 @@ Example::
     >>> from LiteDB.UPDATE import update_values_by_id
     >>> update_values_by_id(db_name='new', table_name='table', collection='coll', id=[1, 2], 
                             value=['some new value', 'second new value'])
-                
+      
+
+```python
+def update_values_by_id(db_name: str, table_name: str, collection: str, id: list, values: list) -> None:
+    """
+    The function updates the many values by the given identifiers
+    :param db_name: the name of the database to be modified
+    :param table_name: the name of the table to be modified
+    :param collection: the name of the collection to be modified
+    :param id: list of identifiers of the values to be modified
+    :param values: list of the new values
+    :return: None
+    """
+    pass
+```          
 To update a single value by its old name, you need to import the *.update_new_value_by_old_value* method from the UPDATE 
 module. 
+
 ```python
 from LiteDB.UPDATE import update_new_value_by_old_value
 ```

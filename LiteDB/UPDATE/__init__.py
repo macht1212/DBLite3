@@ -68,9 +68,9 @@ def update_values_by_id(db_name: str, table_name: str, collection: str, id: list
     :param db_name: the name of the database to be modified
     :param table_name: the name of the table to be modified
     :param collection: the name of the collection to be modified
-    :param id:
-    :param values:
-    :return:
+    :param id: list of identifiers of the values to be modified
+    :param values: list of the new values
+    :return: None
     """
     DATABASE = _open_db(db_name=db_name)
     for i, id in enumerate(id):
