@@ -45,8 +45,6 @@ from LiteDB._funcs import _open_db, _save_db
 #     >>> from LiteDB.UPDATE import update_new_values_by_old_values
 #     >>> update_new_values_by_old_values(db_name='new', table_name='table', collection='coll',
 #                             old_value=['old1', 'old2'], new_value=['some new value', 'second new value'])
-    
-
 
 
 def update_value_by_id(db_name: str, table_name: str, collection: str, id: int, value) -> None:

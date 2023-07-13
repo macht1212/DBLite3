@@ -29,6 +29,18 @@ Example (DB exists)::
     >>> create_db(db_name)
     'DATABASE with this name has already existed'
 
+#### ADDITION INFO
+```python
+def create_db(db_name: str) -> None:
+    """
+    The function creates a database in the base directory of the project
+    :param  db_name: the name of the database to be created. The name of the database must be unique in the project,
+            otherwise the file will be overwritten. Data is passed to the function as a string
+    :return: None
+    """
+    pass
+```
+
 To create table  you need call *.create_table* method from CREATE module 
 
 ```python
@@ -49,6 +61,21 @@ Example (Table exists)::
     >>> create_table(db_name, table_name, collections)
     'Table with this name has already existed'
 
+#### ADDITION INFO
+```python
+def create_table(db_name: str, table_name: str, collections: list) -> None:
+    """
+    The function creates a table with collections
+    :param  db_name: the selected database to create the table. Data is passed to the function as a string
+    :param  table_name: table name. IMPORTANT! The table name must be unique. Data is passed to the function as a string
+    :param  collections: collection name. A collection is similar to a column in a classic relational database, but at
+            the same time it does not require a clear fixation of data relative to other such collections. Data is
+            passed to the function as a list
+    :return: None
+    """
+    pass
+```
+
 ### INSERT
 
 To insert one new value to DataBase you need call *.insert_one* method from INSERT module 
@@ -62,6 +89,22 @@ Example::
     >>> from LiteDB.INSERT import insert_one
     >>> insert_one(db_name='new_db', table_name='table', collection='coll', value='some value')
 
+#### ADDITION INFO
+```python
+def insert_one(db_name: str, table_name: str, collection: str, value) -> None:
+    """
+    The function adds one value to the collection, the value is entered into a separate list, which has its own serial
+    number, calculated relative to the last serial number of the value.
+    :param collection: The name of the collection to add the value to
+    :param table_name: The name of the table to add the value to
+    :param db_name: The name of the database to add the value to
+    :param value: The value to be entered into the database
+    :return: None
+    """
+    pass
+```
+
+
 To insert many new values to DataBase you need call *.insert_many* method from INSERT module 
 ```python
 from LiteDB.INSERT import insert_many
@@ -72,6 +115,22 @@ Example::
 
     >>> from LiteDB.INSERT import insert_many
     >>> insert_one(db_name='new_db', table_name='table', collection='coll', values=['some value'])
+
+#### ADDITION INFO
+```python
+def insert_many(db_name: str, table_name: str, collection: str, values: list) -> None:
+    """
+    The function adds many values to the collection, the value is entered into a separate list, which has its own serial
+    number, calculated relative to the last serial number of the value.
+    :param db_name: The name of the database to add values to
+    :param table_name: The name of the table to add values to
+    :param collection: The name of the collection to add values to
+    :param values: The values to be entered into the database
+    :return: None
+    """
+    pass
+```
+
 
 ### UPDATE
 
