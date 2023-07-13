@@ -1,5 +1,6 @@
 
 # LiteDB
+![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.0-blue)
 
 LiteDB is NoSQL database.
 LiteDB could be used as simple DB for simple projects.
