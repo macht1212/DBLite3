@@ -24,7 +24,6 @@ def _save_db(db_name: str, DB: dict) -> None:
         db.write(str(json.dumps(DB)))
 
 
-# TODO
 def _get_value_id(db_name: str, collection: str, object: str, value) -> None:
     pass
 
