@@ -2,24 +2,24 @@ from LiteDB._funcs import _open_db, _save_db, _value_in
 
 
 # To insert one new value to DataBase you need call .insert_one method from insert module (from LiteDB.insert import
-# insert_one) and pass to method db name, table name, collection and value.
+# insert_one) and pass to method db name, collection name, object and value.
 #
 # Example::
 #     >>> from LiteDB.insert import insert_one
-#     >>> insert_one(db_name='new_db', table_name='table', collection='coll', value='some value')
+#     >>> insert_one(db_name='new_db', collection='table', object='coll', value='some value')
 #
 # To insert many new values to DataBase you need call .insert_many method from insert module (from LiteDB.insert import
-# insert_many) and pass to method db name, table name, collection and values.
+# insert_many) and pass to method db name, collection name, object and values.
 #
 # Example::
 #     >>> from LiteDB.insert import insert_one
-#     >>> insert_one(db_name='new_db', table_name='table', collection='coll', values=['some value'])
+#     >>> insert_one(db_name='new_db', collection='table', object='coll', values=['some value'])
 
 
 def insert_one(db_name: str, collection: str, object: str, value) -> None:
     """
     The function adds one value to the collection, the value is entered into a separate list, which has its own serial
-    number, calculated relative to the last serial number of the value.
+    number, calculated relative to the last serial number of the value
     :param object: The name of the collection to add the value to
     :param collection: The name of the table to add the value to
     :param db_name: The name of the database to add the value to
@@ -40,7 +40,7 @@ def insert_one(db_name: str, collection: str, object: str, value) -> None:
 def insert_many(db_name: str, collection: str, object: str, values: list) -> None:
     """
     The function adds many values to the collection, the value is entered into a separate list, which has its own serial
-    number, calculated relative to the last serial number of the value.
+    number, calculated relative to the last serial number of the value
     :param db_name: The name of the database to add values to
     :param collection: The name of the table to add values to
     :param object: The name of the collection to add values to

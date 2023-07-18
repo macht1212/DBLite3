@@ -1,3 +1,5 @@
+import os
+
 from LiteDB._funcs import _open_db, _save_db
 
 
@@ -54,10 +56,11 @@ def alter_collection(db_name: str, collection_new: str, collection_old: str) -> 
     _save_db(db_name=db_name, DB=DATABASE)
 
 
-def alter_db(db_name: str) -> None:
+def alter_db(db_name_old: str, db_name_new: str) -> None:
     """
     The function makes changes to the name of the database
-    :param db_name: the name of the database to be modified
+    :param db_name_old: the old name of the database to be modified
+    :param db_name_new: the new name of the database to be modified
     :return: None
     """
-    pass
+    os.rename(src=f'{db_name_old}.json', dst=f'{db_name_new}.json')
