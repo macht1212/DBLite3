@@ -24,8 +24,11 @@ def _save_db(db_name: str, DB: dict) -> None:
         db.write(str(json.dumps(DB)))
 
 
-def _get_value_id(db_name: str, collection: str, object: str, value) -> None:
-    pass
+def _get_value_id(db_name: str, collection: str, object: str, value) -> int:
+    DATABASE = _open_db(db_name=db_name)
+    for v in DATABASE[collection][object]['values']:
+        if v[1] == value:
+            return v[0]
 
 
 def _db_exists(db_name: str) -> bool:

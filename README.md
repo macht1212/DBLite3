@@ -49,16 +49,16 @@ To create collection you need call *.create_collection* method from **create** m
 ```python
 from LiteDB.create import create_collection
 ```
-and pass to method db name, table name and list of collections. If table with this name has already existed,
+and pass to method db name, collection name and list of collections. If collection with this name has already existed,
 the Error will raise to console but program will continue working.
 
-Example (Table does not exist)::  
+Example (Collection does not exist)::  
 
     >>> from LiteDB.create import create_collection
     >>> create_collection(db_name='new', collection='col', objects=['o1', 'o2'])
     'Collection col with objects: o1, o2 was created.'
 
-Example (Table exists)::
+Example (Collection exists)::
 
     >>> from LiteDB.create import create_collection
     >>> create_collection(db_name='new', collection='col', objects=['o1', 'o2'])
@@ -66,11 +66,11 @@ Example (Table exists)::
 
 #### ADDITION INFO
 ```python
-def create_table(db_name: str, collection: str, objects: list) -> None:
+def create_collectiob(db_name: str, collection: str, objects: list) -> None:
     """
-    The function creates a table with collections
-    :param  db_name: the selected database to create the table. Data is passed to the function as a string
-    :param  collection: collection name. IMPORTANT! The table name must be unique. Data is passed to the function as a string
+    The function creates a collection with collections
+    :param  db_name: the selected database to create the collection. Data is passed to the function as a string
+    :param  collection: collection name. IMPORTANT! The collection name must be unique. Data is passed to the function as a string
     :param  objects: objects names. A collection is similar to a column in a classic relational database, but at
             the same time it does not require a clear fixation of data relative to other such collections. Data is
             passed to the function as a list
@@ -119,7 +119,7 @@ and pass to method db name, collection name, object and values.
 Example::
 
     >>> from LiteDB.insert import insert_many
-    >>> insert_one(db_name='new_db', collection='table', object='coll', values=['some value'])
+    >>> insert_one(db_name='new_db', collection='collection', object='coll', values=['some value'])
 
 #### ADDITION INFO
 ```python
@@ -153,7 +153,7 @@ identifier of the value to be replaced, as well as the new value.
 Example::
     
     >>> from LiteDB.UPDATE import update_value_by_id
-    >>> update_value_by_id(db_name='new', collection='table', object='coll', id=1, value='some new value')
+    >>> update_value_by_id(db_name='new', collection='collection', object='coll', id=1, value='some new value')
 
 #### ADDITION INFO
 ```python
@@ -175,14 +175,13 @@ To update a few values by their ID, you need to import the *.update_values_by_id
 from LiteDB.update import update_values_by_id
 ```
 
-In this method, you must pass the name of the database, the name of the 
-table, the name of the collection and the identifiers of the values (list) to be replaced, as well as the new 
+In this method, you must pass the name of the database, the name of the collection, the name of the collection and the identifiers of the values (list) to be replaced, as well as the new 
 values (list).
 
 Example::
     
     >>> from LiteDB.UPDATE import update_values_by_id
-    >>> update_values_by_id(db_name='new', collection='table', object='coll', id=[1, 2], 
+    >>> update_values_by_id(db_name='new', collection='collection', object='coll', id=[1, 2], 
                             value=['some new value', 'second new value'])
       
 #### ADDITION INFO
@@ -211,7 +210,7 @@ and pass the method name of db, collection name and old and new object name.
 Example::
 
     >>> from LiteDB.alter import alter_object
-    >>> alter_object(db_name='new_db', collection='table', object_old='coll1', object_new='col2')
+    >>> alter_object(db_name='new_db', collection='collection', object_old='coll1', object_new='col2')
 
 #### ADDITION INFO
 ```python
@@ -233,7 +232,7 @@ alter import alter_collection) and pass the method name of db and old and new co
 Example::
 
     >>> from LiteDB.alter import alter_collection
-    >>> alter_collection(db_name='new_db', collection_new='table2', collection_old='table1')
+    >>> alter_collection(db_name='new_db', collection_new='collection2', collection_old='collection1')
 
 #### ADDITION INFO
 ```python
@@ -301,8 +300,7 @@ To drop collection from database, you need to import the *.drop_db* method from 
 from LiteDB.drop import drop_collection
 ```
 
-In this method, you must pass the name of the database and the name of the
-table.
+In this method, you must pass the name of the database and the name of the collection.
 
 Example::
 
@@ -311,9 +309,9 @@ Example::
 
 #### ADDITION INFO
 ```python
-def drop_table(db_name: str, collection: str) -> None:
+def drop_collection(db_name: str, collection: str) -> None:
     """
-    The function deletes the table from database. IMPORTANT! Using this feature will result in data loss
+    The function deletes the collection from database. IMPORTANT! Using this feature will result in data loss
     :param db_name: the name of the database to be modified
     :param collection: the name of the collection to be dropped
     :return: None
@@ -333,7 +331,7 @@ In this method, you must pass the name of the database, the name of the collecti
 Example::
 
     >>> from LiteDB.DROP import drop_collection
-    >>> drop_db(db_name='new', collection='table', object='coll')
+    >>> drop_db(db_name='new', collection='collection', object='coll')
 
 #### ADDITION INFO
 ```python
