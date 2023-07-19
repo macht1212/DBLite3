@@ -28,15 +28,15 @@ and pass to method db name. If database with this name has already existed, the 
 
 Example (DB does not exist)::
 
-    >>> from LiteDB import create_db
+    >>> from NoSQLite3 import create_db
     >>> create_db(db_name='name')
 
 Example (DB exists)::
 
-    >>> from LiteDB import create_db
+    >>> from NoSQLite3 import create_db
     >>> create_db(db_name='name')
     raise CreationError(f'DATABASE with name: {db_name} has already existed')
-    LiteDB._exceptions.CreationError: DATABASE with name: name has already existed
+    NoSQLite3._exceptions.CreationError: DATABASE with name: name has already existed
 
 You can also use optional parameter "if_exists" to bypass the display of the exception, but a new database with an 
 already existing name will not be created.
@@ -65,15 +65,15 @@ the Error will raise to console but program will continue working.
 
 Example (Collection does not exist)::  
 
-    >>> from LiteDB import create_collection
+    >>> from NoSQLite3 import create_collection
     >>> create_collection(db_name='name', collection='col', objects=['o1', 'o2'])
 
 Example (Collection exists)::
 
-    >>> from LiteDB import create_collection
+    >>> from NoSQLite3 import create_collection
     >>> create_collection(db_name='name', collection='col', objects=['o1', 'o2'])
     raise CreationError(f'Collection with name: {collection} has already existed')
-    LiteDB._exceptions.CreationError: Collection with name: col has already existed
+    NoSQLite3._exceptions.CreationError: Collection with name: col has already existed
 
 #### ADDITION INFO
 ```python
@@ -101,7 +101,7 @@ and pass to method db name, collection name, object and value.
 
 Example::
 
-    >>> from LiteDB import insert_one
+    >>> from NoSQLite3 import insert_one
     >>> insert_one(db_name='name', collection='col', object='o1', value='val')
 
 #### ADDITION INFO
@@ -129,7 +129,7 @@ and pass to method db name, collection name, object and values.
 
 Example::
 
-    >>> from LiteDB import insert_many
+    >>> from NoSQLite3 import insert_many
     >>> insert_many(db_name='name', collection='col', object='o1', values=['val1', 'val2'])
 
 
@@ -190,7 +190,7 @@ values (list).
 
 Example::
     
-    >>> from LiteDB import update_values_by_id
+    >>> from NoSQLite3 import update_values_by_id
     >>> update_values_by_id(db_name='name', collection='col', object='o1', id=[1, 2], values=['val1', 'val2'])
 
       
@@ -220,7 +220,7 @@ and pass the method name of db, collection name and old and new object name.
 
 Example::
 
-    >>> from LiteDB import alter_object
+    >>> from NoSQLite3 import alter_object
     >>> alter_object(db_name='name', collection='col', object_old='o1', object_new='o3')
 
 
@@ -247,7 +247,7 @@ and pass the method name of db and old and new collection name.
 
 Example::
 
-    >>> from LiteDB import alter_collection
+    >>> from NoSQLite3 import alter_collection
     >>> alter_object(db_name='name', collection_old='col1', collection_new='col3')
 
 
@@ -273,7 +273,7 @@ and pass the method old and new names of db.
 
 Example::
     
-    >>> from LiteDB import alter_db
+    >>> from NoSQLite3 import alter_db
     >>> alter_object(db_name_old='name1', db_name_new='name2')
 
 
@@ -301,7 +301,7 @@ In this method, you must pass the name of the database.
 
 Example::
 
-    >>> from LiteDB import drop_db
+    >>> from NoSQLite3 import drop_db
     >>> drop_db(db_name='name')
 
 
@@ -327,7 +327,7 @@ In this method, you must pass the name of the database and the name of the colle
 
 Example::
     
-    >>> from LiteDB import drop_collection
+    >>> from NoSQLite3 import drop_collection
     >>> drop_collection(db_name='name', collection='col')
 
 
@@ -347,14 +347,14 @@ def drop_collection(db_name: str, collection: str) -> None:
 To drop object from database, you need to import the *.drop_collection* method from the **drop** module.
 
 ```python
-from NoSQLite3.drop import drop_object
+from NoSQLite3 import drop_object
 ```
 
 In this method, you must pass the name of the database, the name of the collection and the name of the object.
 
 Example::
 
-    >>> from LiteDB import drop_object
+    >>> from NoSQLite3 import drop_object
     >>> drop_object(db_name='name', collection='col', object='o1')
 
 
@@ -372,18 +372,15 @@ def drop_collection(db_name: str, collection: str, object: str) -> None:
 ```
 
 
-[//]: # (## Installation)
+## Installation
 
-[//]: # ()
-[//]: # (Install my-project with pip)
 
-[//]: # ()
-[//]: # (```bash)
+Install my-project with pip
 
-[//]: # (  pip install litedb)
+```bash
+  pip install NoSQLite3
+```
 
-[//]: # (```)
-    
 ## Authors
 
 - [@macht1212](https://www.github.com/macht1212) Alexander Nazimov

@@ -1,5 +1,5 @@
 Metadata-Version: 2.1
-Name: LiteDB
+Name: NoSQLite3
 Version: 0.1.1
 Summary: NoSQL database
 Home-page: https://github.com/macht1212/LiteDB/
@@ -36,9 +36,10 @@ This DB creates file with file extension **.json** (JavaScript Object Notificati
 ## Documentation
 
 All information is stored in collections which contain objects.  
-All methods are allowed with common import: 
+All methods are allowed with common import:
+
 ```python
-import LiteDB
+import NoSQLite3
 ```
 but you can only import the required methods individually.  
 
@@ -47,7 +48,7 @@ but you can only import the required methods individually.
 To create new DataBase you need call *.create_db* method:
 
 ```python
-from LiteDB import create_db
+from NoSQLite3 import create_db
 ```
 and pass to method db name. If database with this name has already existed, the Error will raise to console.
 
@@ -83,7 +84,7 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
 To create collection you need call *.create_collection* method:
 
 ```python
-from LiteDB import create_collection
+from NoSQLite3 import create_collection
 ```
 and pass to method db name, collection name and list of collections. If collection with this name has already existed,
 the Error will raise to console but program will continue working.
@@ -120,7 +121,7 @@ def create_collectiob(db_name: str, collection: str, objects: list) -> None:
 To insert one new value to DataBase you need call *.insert_one* method:
 
 ```python
-from LiteDB import insert_one
+from NoSQLite3 import insert_one
 ```
 and pass to method db name, collection name, object and value.
 
@@ -148,7 +149,7 @@ def insert_one(db_name: str, collection: str, object: str, value) -> None:
 To insert many new values to DataBase you need call *.insert_many* method:
 
 ```python
-from LiteDB import insert_many
+from NoSQLite3 import insert_many
 ```
 and pass to method db name, collection name, object and values.
 
@@ -178,7 +179,7 @@ def insert_many(db_name: str, collection: str, object: str, values: list) -> Non
 To update a single value by its ID, you need to import the *.update_value_by_id* method:
 
 ```python
-from LiteDB import update_value_by_id
+from NoSQLite3 import update_value_by_id
 ```
 
 In this method, you must pass the name of the database, the name of the collection, the name of the object and the 
@@ -207,7 +208,7 @@ def update_value_by_id(db_name: str, collection: str, object: str, id: int, valu
 To update a few values by their ID, you need to import the *.update_values_by_id* method:
 
 ```python
-from LiteDB import update_values_by_id
+from NoSQLite3 import update_values_by_id
 ```
 
 In this method, you must pass the name of the database, the name of the collection, the name of the collection and the identifiers of the values (list) to be replaced, as well as the new 
@@ -237,8 +238,9 @@ def update_values_by_id(db_name: str, collection: str, object: str, id: list, va
 ### ALTER
 
 To change an object in the database, you need to call the *.alter_object* method:
+
 ```python
-from LiteDB import alter_object
+from NoSQLite3 import alter_object
 ```
 and pass the method name of db, collection name and old and new object name. 
 
@@ -263,8 +265,9 @@ def alter_object(db_name: str, collection: str, object_old: str, object_new: str
 ```
 
 To change a collection in the database, you need to call the *.alter_collection* method:
+
 ```python
-from LiteDB import alter_collection
+from NoSQLite3 import alter_collection
 ```
 and pass the method name of db and old and new collection name. 
 
@@ -288,8 +291,9 @@ def alter_collection(db_name: str, collection_new: str, collection_old: str) -> 
 ```
 
 To change a name of the database, you need to call the *.alter_db* method:
+
 ```python
-from LiteDB import alter_db
+from NoSQLite3 import alter_db
 ```
 and pass the method old and new names of db.  
 
@@ -316,7 +320,7 @@ def alter_db(db_name_old: str, db_name_new: str) -> None:
 To drop database, you need to import the *.drop_db* method:
 
 ```python
-from LiteDB import drop_db
+from NoSQLite3 import drop_db
 ```
 
 In this method, you must pass the name of the database.
@@ -342,7 +346,7 @@ def drop_db(db_name: str) -> None:
 To drop collection from database, you need to import the *.drop_db* method:
 
 ```python
-from LiteDB import drop_collection
+from NoSQLite3 import drop_collection
 ```
 
 In this method, you must pass the name of the database and the name of the collection.
@@ -369,7 +373,7 @@ def drop_collection(db_name: str, collection: str) -> None:
 To drop object from database, you need to import the *.drop_collection* method from the **drop** module.
 
 ```python
-from LiteDB.drop import drop_object
+from NoSQLite3.drop import drop_object
 ```
 
 In this method, you must pass the name of the database, the name of the collection and the name of the object.
