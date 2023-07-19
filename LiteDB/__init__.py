@@ -1,10 +1,10 @@
-from LiteDB.create import create_db, create_collection
-from LiteDB.insert import insert_one, insert_many
-from LiteDB.update import update_value_by_id, update_values_by_id
-from LiteDB.drop import drop_db, drop_collection, drop_object
-from LiteDB.alter import alter_object, alter_collection
-from LiteDB.delete import delete_value, delete_all_values
-from LiteDB.select import size, select_first_five_elements, select_all_values_without_index, \
+from LiteDB._create import create_db, create_collection
+from LiteDB._insert import insert_one, insert_many
+from LiteDB._update import update_value_by_id, update_values_by_id
+from LiteDB._drop import drop_db, drop_collection, drop_object
+from LiteDB._alter import alter_object, alter_collection
+from LiteDB._delete import delete_value, delete_all_values
+from LiteDB._select import size, select_first_five_elements, select_all_values_without_index, \
     select_all_values_with_index, select_all_values_in_collection, gt, lt
 
 
