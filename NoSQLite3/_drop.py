@@ -1,5 +1,5 @@
 import os
-from LiteDB._funcs import _open_db, _save_db, _db_exists
+from NoSQLite3._funcs import _open_db, _save_db, _db_exists
 
 
 def drop_db(db_name: str) -> None:

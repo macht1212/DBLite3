@@ -1,6 +1,6 @@
 import itertools
 
-from LiteDB._funcs import _open_db
+from NoSQLite3._funcs import _open_db
 
 
 def select_all_values_with_index(db_name: str, collection: str, object: str) -> list:

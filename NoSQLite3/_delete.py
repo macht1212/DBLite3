@@ -1,4 +1,4 @@
-from LiteDB._funcs import _open_db, _save_db, _get_value_index
+from NoSQLite3._funcs import _open_db, _save_db, _get_value_index
 
 
 def delete_value(db_name: str, collection: str, object: str, id: int) -> None:
