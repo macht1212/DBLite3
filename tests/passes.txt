@@ -1,0 +1,30 @@
+/usr/local/bin/python3.9 /Applications/PyCharm CE.app/Contents/plugins/python-ce/helpers/pycharm/_jb_pytest_runner.py --path /LiteDB/tests
+Testing started at 11:46 PM ...
+Launching pytest with arguments /LiteDB/tests --no-header --no-summary -q in LiteDB
+
+============================= test session starts ==============================
+collecting ... collected 19 items
+
+tests/test_1_create.py::test_create_db PASSED                            [  5%]
+tests/test_1_create.py::test_create_table PASSED                         [ 10%]
+tests/test_1_create.py::test_create_object PASSED                        [ 15%]
+tests/test_2_insert.py::test_insert_one PASSED                           [ 21%]
+tests/test_2_insert.py::test_insert_many PASSED                          [ 26%]
+tests/test_3_update.py::test_update_value_by_id PASSED                   [ 31%]
+tests/test_3_update.py::test_update_values_by_id PASSED                  [ 36%]
+tests/test_4_alter.py::test_alter_object PASSED                          [ 42%]
+tests/test_4_alter.py::test_alter_collection PASSED                      [ 47%]
+tests/test_4_alter.py::test_alter_db PASSED                              [ 52%]
+tests/test_5_select.py::test_select_all_values_with_index PASSED         [ 57%]
+tests/test_5_select.py::test_select_all_values_without_index PASSED      [ 63%]
+tests/test_5_select.py::test_size PASSED                                 [ 68%]
+tests/test_5_select.py::test_select_all_values_in_collection PASSED      [ 73%]
+tests/test_6_delete.py::test_delete_value PASSED                         [ 78%]
+tests/test_6_delete.py::test_delete_all_values PASSED                    [ 84%]
+tests/test_7_drop.py::test_drop_object PASSED                            [ 89%]
+tests/test_7_drop.py::test_drop_collection PASSED                        [ 94%]
+tests/test_7_drop.py::test_drop_db PASSED                                [100%]
+
+============================== 19 passed in 0.04s ==============================
+
+Process finished with exit code 0
