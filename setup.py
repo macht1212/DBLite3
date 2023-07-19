@@ -1,12 +1,13 @@
 from setuptools import setup
+from LiteDB import __version__, __author__
 
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
 setup(
     name="LiteDB",
-    version="0.1.0",
-    author="Alexander Nazimov",
+    version=__version__,
+    author=__author__,
     author_email="nasimov.alexander@gmail.com",
     description="NoSQL database",
     long_description=readme,

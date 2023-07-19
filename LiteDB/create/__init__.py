@@ -64,6 +64,6 @@ def create_collection(db_name: str, collection: str, object: list) -> None:
         print(Exception(f'Table with name {collection} has already existed.'))
     else:
         DATABASE[collection] = {}
-        for collection in object:
-            DATABASE[collection][collection] = {'values': None}
+        for o in object:
+            DATABASE[collection][o] = {'values': None}
     _save_db(db_name=db_name, DB=DATABASE)

@@ -39,6 +39,13 @@ def _get_value_id(db_name: str, collection: str, object: str, value) -> int:
             return v[0]
 
 
+def _get_value_index(db_name: str, collection: str, object: str, id: int) -> int:
+    DATABASE = _open_db(db_name=db_name)
+    for index, v in enumerate(DATABASE[collection][object]['values']):
+        if v[0] == id:
+            return index
+
+
 def _db_exists(db_name: str) -> bool:
     """
     The function checks if the database exists in the base directory, returns False if it doesn't exist
