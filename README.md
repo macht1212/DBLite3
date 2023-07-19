@@ -1,6 +1,6 @@
 
 # ![Icon](img/icon.svg) LiteDB
-![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.0-blue)
+![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.1-blue)
 
 
 LiteDB is NoSQL database.
