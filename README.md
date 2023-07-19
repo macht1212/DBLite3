@@ -9,34 +9,44 @@ This DB creates file with file extension **.json** (JavaScript Object Notificati
 
 ## Documentation
 
-All information is stored in collections which contain objects.
+All information is stored in collections which contain objects.  
+All methods are allowed with common import: 
+```python
+import LiteDB
+```
+but you can only import the required methods individually.  
+
 
 ### CREATE
-To create new DataBase you need call *.create_db* method from **create** module
+To create new DataBase you need call *.create_db* method
 
 ```python
-from LiteDB.create import create_db
+from LiteDB import create_db
 ```
-and pass to method db name. If database with this name has already existed, the Error will raise to console but
-program will continue working.
+and pass to method db name. If database with this name has already existed, the Error will raise to console.
 
 Example (DB does not exist)::
 
-    >>> from LiteDB.create import create_db
-    >>> create_db(db_name='new')
-    'DataBase db_name was created.'
+    >>> from LiteDB import create_db
+    >>> create_db(db_name='name')
 
 Example (DB exists)::
 
-    >>> from LiteDB.create import create_db
-    >>> create_db(db_name='new')
-    'DATABASE with name new has already existed'
+    >>> from LiteDB import create_db
+    >>> create_db(db_name='name')
+    raise CreationError(f'DATABASE with name: {db_name} has already existed')
+    LiteDB._exceptions.CreationError: DATABASE with name: ss has already existed
+
+You can also use optional parameter "if_exists" to bypass the display of the exception, but a new database with an 
+already existing name will not be created.
 
 #### ADDITION INFO
 ```python
-def create_db(db_name: str) -> None:
+def create_db(db_name: strб if_exists: bool = False) -> None:
     """
     The function creates a database in the base directory of the project
+    :param  if_exists: an optional parameter responsible for skipping an exception when creating a database with an
+            already existing name
     :param  db_name: the name of the database to be created. The name of the database must be unique in the project,
             otherwise the file will be overwritten. Data is passed to the function as a string
     :return: None
@@ -54,15 +64,13 @@ the Error will raise to console but program will continue working.
 
 Example (Collection does not exist)::  
 
-    >>> from LiteDB.create import create_collection
-    >>> create_collection(db_name='new', collection='col', objects=['o1', 'o2'])
-    'Collection col with objects: o1, o2 was created.'
+    >>> from LiteDB import create_collection
+    >>> create_collection(db_name='name'
+
 
 Example (Collection exists)::
 
-    >>> from LiteDB.create import create_collection
-    >>> create_collection(db_name='new', collection='col', objects=['o1', 'o2'])
-    'Collection with this name has already existed'
+
 
 #### ADDITION INFO
 ```python
@@ -90,8 +98,7 @@ and pass to method db name, collection name, object and value.
 
 Example::
 
-    >>> from LiteDB.insert import insert_one
-    >>> insert_one(db_name='new_db', collection='coll', object='o1', value='some value')
+
 
 #### ADDITION INFO
 ```python
@@ -118,8 +125,7 @@ and pass to method db name, collection name, object and values.
 
 Example::
 
-    >>> from LiteDB.insert import insert_many
-    >>> insert_one(db_name='new_db', collection='collection', object='coll', values=['some value'])
+
 
 #### ADDITION INFO
 ```python
@@ -152,8 +158,7 @@ identifier of the value to be replaced, as well as the new value.
 
 Example::
     
-    >>> from LiteDB.UPDATE import update_value_by_id
-    >>> update_value_by_id(db_name='new', collection='collection', object='coll', id=1, value='some new value')
+
 
 #### ADDITION INFO
 ```python
@@ -180,9 +185,7 @@ values (list).
 
 Example::
     
-    >>> from LiteDB.UPDATE import update_values_by_id
-    >>> update_values_by_id(db_name='new', collection='collection', object='coll', id=[1, 2], 
-                            value=['some new value', 'second new value'])
+
       
 #### ADDITION INFO
 ```python
@@ -209,8 +212,7 @@ and pass the method name of db, collection name and old and new object name.
 
 Example::
 
-    >>> from LiteDB.alter import alter_object
-    >>> alter_object(db_name='new_db', collection='collection', object_old='coll1', object_new='col2')
+
 
 #### ADDITION INFO
 ```python
@@ -231,8 +233,7 @@ alter import alter_collection) and pass the method name of db and old and new co
 
 Example::
 
-    >>> from LiteDB.alter import alter_collection
-    >>> alter_collection(db_name='new_db', collection_new='collection2', collection_old='collection1')
+
 
 #### ADDITION INFO
 ```python
@@ -252,15 +253,15 @@ import alter_db) and pass the method name of db.
 
 Example::
 
-    >>> from LiteDB.alter import alter_db
-    >>> alter_db(db_name='new_db')
+
 
 #### ADDITION INFO
 ```python
 def alter_db(db_name: str) -> None:
     """
     The function makes changes to the name of the database
-    :param db_name: the name of the database to be modified
+    :param db_name_old: the old name of the database to be modified
+    :param db_name_new: the new name of the database to be modified
     :return: None
     """
     pass
@@ -278,8 +279,7 @@ In this method, you must pass the name of the database.
 
 Example::
 
-    >>> from LiteDB.DROP import drop_db
-    >>> drop_db(db_name='new')
+
 
 
 #### ADDITION INFO
@@ -304,8 +304,7 @@ In this method, you must pass the name of the database and the name of the colle
 
 Example::
 
-    >>> from LiteDB.DROP import drop_tcollection
-    >>> drop_db(db_name='new', collection='col')
+
 
 #### ADDITION INFO
 ```python
@@ -330,8 +329,7 @@ In this method, you must pass the name of the database, the name of the collecti
 
 Example::
 
-    >>> from LiteDB.DROP import drop_collection
-    >>> drop_db(db_name='new', collection='collection', object='coll')
+
 
 #### ADDITION INFO
 ```python

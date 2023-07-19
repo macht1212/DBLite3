@@ -69,7 +69,7 @@ def _collection_exists(collection: str, DB: dict) -> bool:
     return False
 
 
-def _value_in(DATABASE: dict, collection: str, object: str) -> bool:
+def _is_value_in(DATABASE: dict, collection: str, object: str) -> bool:
     """
     The function checks if the first entry in the collection exists
     :param DATABASE: dictionary containing the database
@@ -80,16 +80,3 @@ def _value_in(DATABASE: dict, collection: str, object: str) -> bool:
     if DATABASE[collection][object]['values']:
         return False
     return True
-
-
-# TODO: встроить автоматическое проставление id при подстановке значений в объект
-class Counter:
-
-    def __init__(self):
-        self._counter = 0
-
-    def plus(self) -> None:
-        self._counter += 1
-
-    def counter(self) -> int:
-        return self._counter
