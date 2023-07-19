@@ -59,12 +59,25 @@ def _db_exists(db_name: str) -> bool:
 
 def _collection_exists(collection: str, DB: dict) -> bool:
     """
-    The function checks if the table exists in the database, returns False if it doesn't exist
+    The function checks if the collection exists in the database, returns False if it doesn't exist
     :param collection:
     :param DB:
     :return:
     """
     if collection in DB.keys():
+        return True
+    return False
+
+
+def _object_exists(collection: str, object: str, DB: dict) -> bool:
+    """
+    The function checks if the object exists in the database, returns False if it doesn't exist
+    :param collection:
+    :param object:
+    :param DB:
+    :return:
+    """
+    if object in DB[collection].keys():
         return True
     return False
 

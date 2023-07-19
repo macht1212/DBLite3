@@ -1,4 +1,4 @@
-from LiteDB._funcs import _open_db, _save_db, _db_exists, _collection_exists
+from LiteDB._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
 from LiteDB._exceptions import CreationError
 
 
@@ -38,4 +38,20 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
         DATABASE[collection] = {}
         for o in objects:
             DATABASE[collection][o] = {'values': None}
+    _save_db(db_name=db_name, DB=DATABASE)
+
+
+def create_object(db_name: str, collection: str, object: str) -> None:
+    """
+
+    :param db_name:
+    :param collection:
+    :param object:
+    :return:
+    """
+    DATABASE = _open_db(db_name=db_name)
+    if _object_exists(collection=collection, object=object, DB=DATABASE):
+        raise CreationError(f'Object with name: {object} has already existed.')
+    else:
+        DATABASE[collection][object] = {'values': None}
     _save_db(db_name=db_name, DB=DATABASE)
