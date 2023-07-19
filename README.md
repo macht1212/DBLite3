@@ -368,13 +368,17 @@ def drop_collection(db_name: str, collection: str, object: str) -> None:
 ```
 
 
-## Installation
+[//]: # (## Installation)
 
-Install my-project with pip
+[//]: # ()
+[//]: # (Install my-project with pip)
 
-```bash
-  pip install litedb
-```
+[//]: # ()
+[//]: # (```bash)
+
+[//]: # (  pip install litedb)
+
+[//]: # (```)
     
 ## Authors
 
