@@ -1,5 +1,6 @@
 
 # ![Icon](img/icon.svg) DBLite3
+
 ![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.3-blue)
 
 
