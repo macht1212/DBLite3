@@ -1,6 +1,6 @@
 import itertools
 
-from NoSQLite3._funcs import _open_db
+from DBLite3._funcs import _open_db
 
 
 def select_all_values_with_index(db_name: str, collection: str, object: str) -> list:

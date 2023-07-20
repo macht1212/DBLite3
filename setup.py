@@ -1,11 +1,11 @@
-from setuptools import setup, find_packages
-from NoSQLite3 import __version__, __author__
+from setuptools import setup
+from DBLite3 import __version__, __author__
 
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
 setup(
-    name="NoSQLite3",
+    name="DBLite3",
     version=__version__,
     author=__author__,
     author_email='nasimov.alexander@gmail.com',
@@ -14,8 +14,8 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/macht1212/LiteDB/",
     download_url="https://github.com/macht1212/LiteDB/archive/{}.tar.gz".format(__version__),
-    packages=['NoSQLite3'],
-    package_data={'NoSQLite3': ['__init__.py']},
+    packages=['DBLite3'],
+    package_data={'DBLite3': ['__init__.py']},
     keywords=['database', 'nosql', 'litedb'],
     license="MIT license",
     python_requires=">=3.9",

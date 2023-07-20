@@ -5,3 +5,5 @@ venv
 */__pycache__
 /tests/.pytest_cache/
 /.pytest_cache/
+/dist
+/DBLite3.egg-info

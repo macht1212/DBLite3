@@ -1,4 +1,4 @@
-from NoSQLite3._funcs import _open_db, _save_db, _is_value_in
+from DBLite3._funcs import _open_db, _save_db, _is_value_in
 
 
 def insert_one(db_name: str, collection: str, object: str, value) -> None:

@@ -1,5 +1,5 @@
-from NoSQLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
-from NoSQLite3._exceptions import CreationError
+from DBLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
+from DBLite3._exceptions import CreationError
 
 
 def create_db(db_name: str, if_exists: bool = False) -> None:

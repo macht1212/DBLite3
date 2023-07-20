@@ -1,4 +1,4 @@
-from NoSQLite3._funcs import _open_db, _save_db, _get_value_index
+from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
 def update_value_by_id(db_name: str, collection: str, object: str, id: int, value) -> None:

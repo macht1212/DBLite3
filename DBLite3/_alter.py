@@ -1,6 +1,6 @@
 import os
 
-from NoSQLite3._funcs import _open_db, _save_db
+from DBLite3._funcs import _open_db, _save_db
 
 
 def alter_object(db_name: str, collection: str, object_old: str, object_new: str) -> None:

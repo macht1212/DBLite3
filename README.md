@@ -1,10 +1,10 @@
 
-# ![Icon](img/icon.svg) LiteDB
-![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.1-blue)
+# ![Icon](img/icon.svg) DBLite3
+![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.3-blue)
 
 
-LiteDB is NoSQL database.
-LiteDB could be used as simple DB for simple projects.
+DBLite3 is NoSQL database.
+DBLite3 could be used as simple DB for simple projects.
 This DB creates file with file extension **.json** (JavaScript Object Notification).
 
 ## Documentation
@@ -13,7 +13,7 @@ All information is stored in collections which contain objects.
 All methods are allowed with common import:
 
 ```python
-import NoSQLite3
+import DBLite3
 ```
 but you can only import the required methods individually.  
 
@@ -22,18 +22,18 @@ but you can only import the required methods individually.
 To create new DataBase you need call *.create_db* method:
 
 ```python
-from NoSQLite3 import create_db
+from DBLite3 import create_db
 ```
 and pass to method db name. If database with this name has already existed, the Error will raise to console.
 
 Example (DB does not exist)::
 
-    >>> from NoSQLite3 import create_db
+    >>> from DBLite3 import create_db
     >>> create_db(db_name='name')
 
 Example (DB exists)::
 
-    >>> from NoSQLite3 import create_db
+    >>> from DBLite3 import create_db
     >>> create_db(db_name='name')
     raise CreationError(f'DATABASE with name: {db_name} has already existed')
     NoSQLite3._exceptions.CreationError: DATABASE with name: name has already existed
@@ -58,26 +58,26 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
 To create collection you need call *.create_collection* method:
 
 ```python
-from NoSQLite3 import create_collection
+from DBLite3 import create_collection
 ```
 and pass to method db name, collection name and list of collections. If collection with this name has already existed,
 the Error will raise to console but program will continue working.
 
 Example (Collection does not exist)::  
 
-    >>> from NoSQLite3 import create_collection
+    >>> from DBLite3 import create_collection
     >>> create_collection(db_name='name', collection='col', objects=['o1', 'o2'])
 
 Example (Collection exists)::
 
-    >>> from NoSQLite3 import create_collection
+    >>> from DBLite3 import create_collection
     >>> create_collection(db_name='name', collection='col', objects=['o1', 'o2'])
     raise CreationError(f'Collection with name: {collection} has already existed')
     NoSQLite3._exceptions.CreationError: Collection with name: col has already existed
 
 #### ADDITION INFO
 ```python
-def create_collectiob(db_name: str, collection: str, objects: list) -> None:
+def create_collection(db_name: str, collection: str, objects: list) -> None:
     """
     The function creates a collection with collections
     :param  db_name: the selected database to create the collection. Data is passed to the function as a string
@@ -95,13 +95,13 @@ def create_collectiob(db_name: str, collection: str, objects: list) -> None:
 To insert one new value to DataBase you need call *.insert_one* method:
 
 ```python
-from NoSQLite3 import insert_one
+from DBLite3 import insert_one
 ```
 and pass to method db name, collection name, object and value.
 
 Example::
 
-    >>> from NoSQLite3 import insert_one
+    >>> from DBLite3 import insert_one
     >>> insert_one(db_name='name', collection='col', object='o1', value='val')
 
 #### ADDITION INFO
@@ -123,13 +123,13 @@ def insert_one(db_name: str, collection: str, object: str, value) -> None:
 To insert many new values to DataBase you need call *.insert_many* method:
 
 ```python
-from NoSQLite3 import insert_many
+from DBLite3 import insert_many
 ```
 and pass to method db name, collection name, object and values.
 
 Example::
 
-    >>> from NoSQLite3 import insert_many
+    >>> from DBLite3 import insert_many
     >>> insert_many(db_name='name', collection='col', object='o1', values=['val1', 'val2'])
 
 
@@ -153,7 +153,7 @@ def insert_many(db_name: str, collection: str, object: str, values: list) -> Non
 To update a single value by its ID, you need to import the *.update_value_by_id* method:
 
 ```python
-from NoSQLite3 import update_value_by_id
+from DBLite3 import update_value_by_id
 ```
 
 In this method, you must pass the name of the database, the name of the collection, the name of the object and the 
@@ -161,7 +161,7 @@ identifier of the value to be replaced, as well as the new value.
 
 Example::
 
-    >>> from LiteDB import update_value_by_id
+    >>> from DBLite3 import update_value_by_id
     >>> update_value_by_id(db_name='name', collection='col', object='o1', id=1, value='val2')
 
 
@@ -182,7 +182,7 @@ def update_value_by_id(db_name: str, collection: str, object: str, id: int, valu
 To update a few values by their ID, you need to import the *.update_values_by_id* method:
 
 ```python
-from NoSQLite3 import update_values_by_id
+from DBLite3 import update_values_by_id
 ```
 
 In this method, you must pass the name of the database, the name of the collection, the name of the collection and the identifiers of the values (list) to be replaced, as well as the new 
@@ -190,7 +190,7 @@ values (list).
 
 Example::
     
-    >>> from NoSQLite3 import update_values_by_id
+    >>> from DBLite3 import update_values_by_id
     >>> update_values_by_id(db_name='name', collection='col', object='o1', id=[1, 2], values=['val1', 'val2'])
 
       
@@ -214,13 +214,13 @@ def update_values_by_id(db_name: str, collection: str, object: str, id: list, va
 To change an object in the database, you need to call the *.alter_object* method:
 
 ```python
-from NoSQLite3 import alter_object
+from DBLite3 import alter_object
 ```
 and pass the method name of db, collection name and old and new object name. 
 
 Example::
 
-    >>> from NoSQLite3 import alter_object
+    >>> from DBLite3 import alter_object
     >>> alter_object(db_name='name', collection='col', object_old='o1', object_new='o3')
 
 
@@ -241,13 +241,13 @@ def alter_object(db_name: str, collection: str, object_old: str, object_new: str
 To change a collection in the database, you need to call the *.alter_collection* method:
 
 ```python
-from NoSQLite3 import alter_collection
+from DBLite3 import alter_collection
 ```
 and pass the method name of db and old and new collection name. 
 
 Example::
 
-    >>> from NoSQLite3 import alter_collection
+    >>> from DBLite3 import alter_collection
     >>> alter_object(db_name='name', collection_old='col1', collection_new='col3')
 
 
@@ -267,13 +267,13 @@ def alter_collection(db_name: str, collection_new: str, collection_old: str) -> 
 To change a name of the database, you need to call the *.alter_db* method:
 
 ```python
-from NoSQLite3 import alter_db
+from DBLite3 import alter_db
 ```
 and pass the method old and new names of db.  
 
 Example::
     
-    >>> from NoSQLite3 import alter_db
+    >>> from DBLite3 import alter_db
     >>> alter_object(db_name_old='name1', db_name_new='name2')
 
 
@@ -289,19 +289,23 @@ def alter_db(db_name_old: str, db_name_new: str) -> None:
     pass
 ```
 
+### SELECT
+
+To select all values with indexes from Database use *.select_all_values_with_index* method
+
 ### DROP/DELETE
 
 To drop database, you need to import the *.drop_db* method:
 
 ```python
-from NoSQLite3 import drop_db
+from DBLite3 import drop_db
 ```
 
 In this method, you must pass the name of the database.
 
 Example::
 
-    >>> from NoSQLite3 import drop_db
+    >>> from DBLite3 import drop_db
     >>> drop_db(db_name='name')
 
 
@@ -320,14 +324,14 @@ def drop_db(db_name: str) -> None:
 To drop collection from database, you need to import the *.drop_db* method:
 
 ```python
-from NoSQLite3 import drop_collection
+from DBLite3 import drop_collection
 ```
 
 In this method, you must pass the name of the database and the name of the collection.
 
 Example::
     
-    >>> from NoSQLite3 import drop_collection
+    >>> from DBLite3 import drop_collection
     >>> drop_collection(db_name='name', collection='col')
 
 
@@ -347,14 +351,14 @@ def drop_collection(db_name: str, collection: str) -> None:
 To drop object from database, you need to import the *.drop_collection* method from the **drop** module.
 
 ```python
-from NoSQLite3 import drop_object
+from DBLite3 import drop_object
 ```
 
 In this method, you must pass the name of the database, the name of the collection and the name of the object.
 
 Example::
 
-    >>> from NoSQLite3 import drop_object
+    >>> from DBLite3 import drop_object
     >>> drop_object(db_name='name', collection='col', object='o1')
 
 
@@ -378,7 +382,7 @@ def drop_collection(db_name: str, collection: str, object: str) -> None:
 Install my-project with pip
 
 ```bash
-  pip install NoSQLite3
+  pip install DBLite3
 ```
 
 ## Authors
