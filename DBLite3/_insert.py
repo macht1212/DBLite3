@@ -35,7 +35,7 @@ def insert_many(db_name: str, collection: str, object: str, values: list) -> Non
     DATABASE = _open_db(db_name=db_name)
     if _is_value_in(DATABASE=DATABASE, collection=collection, object=object):
         for i, e in enumerate(values):
-            DATABASE[collection][object]['values'] = [(1 + i, values[i])] # проблема тут: сохраняется последнее значение
+            DATABASE[collection][object]['values'] = [(1 + i, values[i])]
     else:
         count = DATABASE[collection][object]['values'][-1][0]
         for i, e in enumerate(values):
