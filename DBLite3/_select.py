@@ -1,5 +1,4 @@
-import itertools
-
+from DBLite3._exceptions import SelectError
 from DBLite3._funcs import _open_db
 
 

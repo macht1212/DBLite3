@@ -386,6 +386,16 @@ Install my-project with pip
   pip install DBLite3
 ```
 
+
+## RoadMap
+* Add a few variants of inserts (one-in-one, one-in-many, many-to-one, many-to-many)
+* Add description field to *.create_db* method (optional)
+* Add restrictions to values (uniqueness, insertion restriction, data type restriction)
+* Using any data encryption library, implement a secure way to work with the database
+* Add the ability to select values from all collections and objects together and compare
+
+
+
 ## Authors
 
 - [@macht1212](https://www.github.com/macht1212) Alexander Nazimov
@@ -396,7 +406,7 @@ Install my-project with pip
 [MIT](https://github.com/macht1212/LiteDB/blob/0711686a88e82182ed37199da73cea1b7595a75d/LICENSE.txt)
 
 
-## Lessons Learned
+[//]: # (## Lessons Learned)
 
 
 

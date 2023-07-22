@@ -39,6 +39,30 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
         for o in objects:
             DATABASE[collection][o] = {'values': None}
     _save_db(db_name=db_name, DB=DATABASE)
+    return
+
+
+def create_collections(db_name: str, collections: list, objects: list) -> None:
+    """
+    The function creates a collection with collections
+    :param  db_name: the selected database to create the collection. Data is passed to the function as a string
+    :param  collections: list of collection names. IMPORTANT! The collection name must be unique. Data is passed to the
+            function as a string
+    :param  objects: objects names. A collection is similar to a column in a classic relational database, but at
+            the same time it does not require a clear fixation of data relative to other such collections. Data is
+            passed to the function as a list
+    :return: None
+    """
+    DATABASE = _open_db(db_name=db_name)
+    for collection in collections:
+        if _collection_exists(collection=collection, DB=DATABASE):
+            raise CreationError(f'Collection with name: {collection} has already existed.')
+        else:
+            DATABASE[collection] = {}
+            for o in objects:
+                DATABASE[collection][o] = {'values': None}
+    _save_db(db_name=db_name, DB=DATABASE)
+    return
 
 
 def create_object(db_name: str, collection: str, object: str) -> None:

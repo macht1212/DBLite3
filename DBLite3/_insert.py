@@ -1,7 +1,9 @@
+from typing import Any
+
 from DBLite3._funcs import _open_db, _save_db, _is_value_in
 
 
-def insert_one(db_name: str, collection: str, object: str, value) -> None:
+def insert_one(db_name: str, collection: str, object: str, value: Any) -> None:
     """
     The function adds one value to the collection, the value is entered into a separate list, which has its own serial
     number, calculated relative to the last serial number of the value
@@ -13,7 +15,7 @@ def insert_one(db_name: str, collection: str, object: str, value) -> None:
     """
 
     DATABASE = _open_db(db_name=db_name)
-    if _is_value_in(DATABASE=DATABASE, collection=collection, object=object):
+    if _is_value_in(DB=DATABASE, collection=collection, object=object):
         DATABASE[collection][object]['values'] = [(1, value)]
     else:
         count = DATABASE[collection][object]['values'][-1][0]
@@ -33,11 +35,17 @@ def insert_many(db_name: str, collection: str, object: str, values: list) -> Non
     :return: None
     """
     DATABASE = _open_db(db_name=db_name)
-    if _is_value_in(DATABASE=DATABASE, collection=collection, object=object):
-        for i, e in enumerate(values):
-            DATABASE[collection][object]['values'] = [(1 + i, values[i])]
-    else:
+    if DATABASE[collection][object]['values']:
         count = DATABASE[collection][object]['values'][-1][0]
+    else:
+        count = 0
+    if _is_value_in(DB=DATABASE, collection=collection, object=object):
+        for i, e in enumerate(values):
+            if i == 0:
+                DATABASE[collection][object]['values'] = [(1 + i, values[i])]
+            else:
+                DATABASE[collection][object]['values'].append([count + i + 1, values[i]])
+    else:
         for i, e in enumerate(values):
             DATABASE[collection][object]['values'].append([count + i + 1, values[i]])
     _save_db(db_name=db_name, DB=DATABASE)

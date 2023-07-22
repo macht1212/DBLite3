@@ -1,5 +1,7 @@
 import os
-from DBLite3._funcs import _open_db, _save_db, _db_exists
+
+from DBLite3._exceptions import DropError
+from DBLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
 
 
 def drop_db(db_name: str) -> None:
@@ -10,8 +12,9 @@ def drop_db(db_name: str) -> None:
     """
     if _db_exists(db_name=db_name):
         os.remove(f'{db_name}.json')
+        return
     else:
-        print(Exception('Database does not exist.'))
+        raise DropError(f'Database {db_name} does not exist.')
 
 
 def drop_collection(db_name: str, collection: str) -> None:
@@ -22,8 +25,12 @@ def drop_collection(db_name: str, collection: str) -> None:
     :return: None
     """
     DATABASE = _open_db(db_name=db_name)
-    del(DATABASE[collection])
-    _save_db(db_name=db_name, DB=DATABASE)
+    if _collection_exists(collection=collection, DB=DATABASE):
+        del (DATABASE[collection])
+        _save_db(db_name=db_name, DB=DATABASE)
+        return
+    else:
+        raise DropError(f'Collection {collection} does not exist.')
 
 
 def drop_object(db_name: str, collection: str, object: str) -> None:
@@ -35,5 +42,9 @@ def drop_object(db_name: str, collection: str, object: str) -> None:
     :return: None
     """
     DATABASE = _open_db(db_name=db_name)
-    del(DATABASE[collection][object])
-    _save_db(db_name=db_name, DB=DATABASE)
+    if _object_exists(collection=collection, object=object, DB=DATABASE):
+        del (DATABASE[collection][object])
+        _save_db(db_name=db_name, DB=DATABASE)
+        return
+    else:
+        raise DropError(f'Object {object} does not exist.')

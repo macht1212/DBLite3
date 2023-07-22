@@ -1,7 +1,9 @@
+from typing import Any
+
 from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
-def update_value_by_id(db_name: str, collection: str, object: str, id: int, value) -> None:
+def update_value_by_id(db_name: str, collection: str, object: str, id: int, value: Any) -> None:
     """
     The function updates the single value by the given identifier
     :param db_name: the name of the database to be modified
