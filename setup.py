@@ -13,7 +13,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     url="https://github.com/macht1212/LiteDB/",
-    download_url=f"https://github.com/macht1212/LiteDB/dist/DBLite3-{__version__}.tar.gz",
+    download_url=f"https://github.com/macht1212/DBLite3/dist/DBLite3-{__version__}.tar.gz",
     packages=['DBLite3'],
     package_data={'DBLite3': ['__init__.py']},
     keywords=['database', 'nosql', 'litedb', 'json'],
