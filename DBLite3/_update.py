@@ -1,36 +1,98 @@
 from typing import Any
 
+from DBLite3 import SaveError, OpenError
 from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
 def update_value_by_id(db_name: str, collection: str, object: str, id: int, value: Any) -> None:
     """
-    The function updates the single value by the given identifier
-    :param db_name: the name of the database to be modified
-    :param collection: the name of the collection to be modified
-    :param object: the name of the object to be modified
-    :param id: identifier of the value to be modified
-    :param value: new value
-    :return: None
+    Objective:
+    The objective of the function is to update a single value in a specific object of a collection in a given database, based on the provided id.
+    
+    Inputs:
+        - db_name: a string representing the name of the database to be modified.
+        - collection: a string representing the name of the collection to be modified.
+        - object: a string representing the name of the object to be modified.
+        - id: an integer representing the id of the value to be modified.
+        - value: any type representing the new value to be assigned to the specified id.
+    
+    Flow:
+        - The function calls the _open_db() function to open the database and retrieve its content.
+        - The function calls the _get_value_index() function to retrieve the index of the value to be modified.
+        - The function updates the value at the retrieved index with the provided new value.
+        - The function calls the _save_db() function to save the modified database.
+    
+    Outputs:
+        - None
+    
+    Additional aspects:
+        - The function assumes that the database, collection, object, and value with the provided names and id exist.
+        - The function does not handle any errors that may occur during the file operations or the search for the value index.
     """
     DATABASE = _open_db(db_name=db_name)
+    
+    if not isinstance(collection, str) or not isinstance(object, str) or not isinstance(id, int):
+        raise TypeError('collection, object, and id must be str and int, respectively')
+    
+    if collection not in DATABASE or object not in DATABASE[collection]:
+        raise ValueError('Invalid collection or object')
+    
     index = _get_value_index(db_name=db_name, collection=collection, object=object, id=id)
+    
+    if index is None:
+        raise ValueError('Value with provided id does not exist')
+    
     DATABASE[collection][object]['values'][index][1] = value
-    _save_db(db_name=db_name, DB=DATABASE)
+    
+    try:
+        _save_db(db_name=db_name, DB=DATABASE)
+    except Exception as e:
+        raise SaveError(f'Error saving database: {e}')
 
 
 def update_values_by_id(db_name: str, collection: str, object: str, id: list, values: list) -> None:
     """
-    The function updates the many values by the given identifiers
-    :param db_name: the name of the database to be modified
-    :param collection: the name of the collection to be modified
-    :param object: the name of the object to be modified
-    :param id: list of identifiers of the values to be modified
-    :param values: list of the new values
-    :return: None
+    Objective:
+    The objective of the function is to update multiple values in a specific object of a collection in a given database, based on the provided identifiers.
+
+    Inputs:
+    - db_name: a string representing the name of the database to be modified.
+    - collection: a string representing the name of the collection to be modified.
+    - object: a string representing the name of the object to be modified.
+    - id: a list of integers representing the identifiers of the values to be modified.
+    - values: a list of the new values to replace the old ones.
+
+    Flow:
+    - The function calls the _open_db() function to open the database and retrieve its content.
+    - The function iterates over the provided list of identifiers.
+    - For each identifier, the function calls the _get_value_index() function to retrieve the index of the value in the specified object of the specified collection in the specified database, based on the provided identifier.
+    - The function updates the value at the retrieved index with the corresponding value from the provided list of new values.
+    - The function calls the _save_db() function to save the modified database.
+
+    Outputs:
+    - None
+
+    Additional aspects:
+    - The function assumes that the database, collection, object, and values with the provided names and identifiers exist.
+    - The function does not handle any errors that may occur during the file operations or the update of the values.
     """
+    if len(id) != len(values):
+        raise ValueError('id and values lists must have the same length')
+
     DATABASE = _open_db(db_name=db_name)
+    
+    if collection not in DATABASE or object not in DATABASE[collection]:
+        raise ValueError('Invalid collection or object')
+    
     for i, id in enumerate(id):
         index = _get_value_index(db_name=db_name, collection=collection, object=object, id=id)
+        
+        if index is None:
+            raise ValueError(f'Value with id {id} not found in database')
+        
         DATABASE[collection][object]['values'][index][1] = values[i]
-    _save_db(db_name=db_name, DB=DATABASE)
+    
+    try:
+        _save_db(db_name=db_name, DB=DATABASE)
+    except (SaveError, OpenError) as e:
+        print(f'Error updating values by id: {e}')

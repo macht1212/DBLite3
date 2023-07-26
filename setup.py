@@ -1,5 +1,5 @@
 from setuptools import setup
-from DBLite3 import __version__, __author__
+from DBLite3 import __version__, __author__, __email__
 
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
@@ -8,7 +8,7 @@ setup(
     name="DBLite3",
     version=__version__,
     author=__author__,
-    author_email='nasimov.alexander@gmail.com',
+    author_email=__email__,
     description="NoSQL database",
     long_description=readme,
     long_description_content_type="text/markdown",
@@ -16,7 +16,7 @@ setup(
     download_url="https://github.com/macht1212/LiteDB/archive/{}.tar.gz".format(__version__),
     packages=['DBLite3'],
     package_data={'DBLite3': ['__init__.py']},
-    keywords=['database', 'nosql', 'litedb'],
+    keywords=['database', 'nosql', 'litedb', 'json'],
     license="MIT license",
     python_requires=">=3.9",
     classifiers=[
