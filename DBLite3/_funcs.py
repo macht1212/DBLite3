@@ -264,8 +264,8 @@ def _is_value_in(DB: dict, collection: str, object: str) -> bool:
         - The function assumes that the 'values' key exists in the object in the collection
     """
     if DB.get(collection, {}).get(object, {}).get('values', None):
-        return False
-    return True
+        return True
+    return False
 
 
 def _is_value_exists(DB: dict, collection: str, object: str, value: Any) -> bool:
@@ -274,3 +274,31 @@ def _is_value_exists(DB: dict, collection: str, object: str, value: Any) -> bool
     @type DB: object
     
     """
+    
+    
+def _count(DATABASE: dict, collection: str, object: str) -> int:
+    """
+    Objective:
+    The objective of the function is to count the number of entries in a given collection in a database dictionary. If the first entry in the collection exists, the function returns the value of the first element in the last entry of the 'values' key of the object in the collection. Otherwise, the function returns 0.
+
+    Inputs:
+        - DATABASE: a dictionary containing the database
+        - collection: a string representing the name of the collection to count the entries in
+        - object: a string representing the name of the table to count the entries in
+
+    Flow:
+        - Check if the first entry in the collection exists by calling the _is_value_in function
+        - If the first entry exists, return the value of the first element in the last entry of the 'values' key of the object in the collection
+        - If the first entry does not exist, return 0
+
+    Outputs:
+        - An integer representing the number of entries in the collection, or 0 if the collection is empty
+
+    Additional aspects:
+        - The function assumes that the 'values' key exists in the object in the collection
+        - The function only counts the number of entries in the collection, and does not modify the database dictionary
+    """
+    if _is_value_in(DB=DATABASE, collection=collection, object=object):
+        return DATABASE.get(collection, None).get(object, None).get('values', None)[-1]
+    else:
+        return 0

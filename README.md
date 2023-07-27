@@ -132,19 +132,19 @@ def create_object(db_name: str, collection: str, object: str) -> None:
 
 ### INSERT
 
-To insert one new value to DataBase you need call *.insert_one* method:
+To insert one new value to one collection you need call *.insert_one_in_one_collection* method:
 
 ```python
-from DBLite3 import insert_one
+from DBLite3 import insert_one_in_one_collection
 ```
 and pass to method db name, collection name, object and value.
 
 
 ```python
-def insert_one(db_name: str, collection: str, object: str, value) -> None:
+def insert_one_in_one_collection(db_name: str, collection: str, object: str, value) -> None:
     """
     Objective:
-    The objective of the 'insert_one' function is to add a single value to a collection in a database. The function creates a new list for the value, with a serial number calculated relative to the last serial number of the value.
+    The objective of the 'insert_one_in_one_collection' function is to add a single value to a collection in a database. The function creates a new list for the value, with a serial number calculated relative to the last serial number of the value.
     
     Inputs:
         - db_name: a string representing the name of the database to add the value to
@@ -170,16 +170,16 @@ def insert_one(db_name: str, collection: str, object: str, value) -> None:
 ```
 
 
-To insert many new values to DataBase you need call *.insert_many* method:
+To insert many new values to one collection you need call *.insert_many_in_one_collection* method:
 
 ```python
-from DBLite3 import insert_many
+from DBLite3 import insert_many_in_one_collection
 ```
 and pass to method db name, collection name, object and values.
 
 
 ```python
-def insert_many(db_name: str, collection: str, object: str, values: list) -> None:
+def insert_many_in_one_collection(db_name: str, collection: str, object: str, values: list) -> None:
     """
     Objective:
     The objective of the function is to add multiple values to a collection in a given database. The values are added to a separate list within the collection, with each value having its own serial number relative to the last serial number of the value.
@@ -207,6 +207,45 @@ def insert_many(db_name: str, collection: str, object: str, values: list) -> Non
         - The function assumes that the 'values' key exists in the object in the collection
         - The function overwrites the existing file with the same name if it already exists
         - The function does not handle any errors that may occur during the file operations
+    """
+    pass
+```
+
+To insert one value to many collections you need to use the *.insert_one_in_many_collections* method:
+```python
+from DBLite3 import insert_one_in_many_collections
+```
+and pass the method database name, list of collections, object name and values.
+
+
+```python
+def insert_one_in_many_collections(db_name: str, collections: list, object: str, value: Any) -> None:
+    """
+    Objective:
+    The objective of the 'insert_one_in_many_collections' function is to insert a single value into multiple collections and objects in a database. The function takes in the name of the database, a list of collection names, an object name, and a value to be inserted.
+
+    Inputs:
+        - db_name: a string representing the name of the database to insert the value into
+        - collections: a list of strings representing the names of the collections to insert the value into
+        - object: a string representing the name of the object to insert the value into
+        - value: any type of value to be inserted into the collections and object
+
+    Flow:
+        - Open the database using the '_open_db' function
+        - For each collection in the list of collections:
+            - Check if the collection and object exist in the database
+            - Get the count of entries in the collection using the '_count' function
+            - If the first entry in the collection exists, append the value to the 'values' key of the object in the collection with a new count value
+        - Save the updated database using the '_save_db' function
+
+    Outputs:
+        - None
+
+    Additional aspects:
+        - The function raises a 'KeyError' if the collection or object does not exist in the database
+        - The function uses the '_is_value_in' function to check if the first entry in the collection exists
+        - The function uses the 'enumerate' function to get the index of each collection in the list of collections
+        - The function raises a 'SaveError' if there is an error while saving the updated database
     """
     pass
 ```

@@ -51,26 +51,27 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
 def create_collection(db_name: str, collection: str, objects: list) -> None:
     """
     Objective:
-    The objective of the function is to create a new collection in a given database with a unique name and a list of objects. The function checks if the collection already exists and raises an error if it does. Otherwise, it creates a new collection with the given objects and saves it to the database.
-    
+    The objective of the create_collection function is to create a new collection in a given database with a unique name and a list of objects. The function checks if the collection already exists and raises an error if it does. Otherwise, it creates a new collection with the given objects and saves it to the database.
+
     Inputs:
         - db_name: a string representing the name of the database where the collection will be created.
         - collection: a string representing the name of the new collection to be created.
         - objects: a list of strings representing the names of the objects to be added to the new collection.
-    
+
     Flow:
         - The function opens the database with the given name using the _open_db function.
         - The function checks if the collection already exists in the database using the _does_collection_exists function. If it does, the function raises a CreationError.
         - If the collection does not exist, the function creates a new collection in the database with the given name and objects.
         - The function saves the updated database using the _save_db function.
-    
+
     Outputs:
         - None: the function does not return anything.
-    
+
     Additional aspects:
         - The function assumes that the database already exists and has been parsed into a dictionary.
         - The function only creates a new collection and does not perform any other operations on it.
         - The function overwrites the existing database file with the updated version.
+        - The function raises ValueErrors if the inputs are not of the expected type or format.
     """
 
     DATABASE = _open_db(db_name=db_name)
