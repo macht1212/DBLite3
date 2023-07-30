@@ -77,7 +77,7 @@ def _save_db(db_name: str, DB: dict) -> None:
     return
 
 
-def _get_value_id(db_name: str, collection: str, object: str, value: Any) -> int | None:
+def _get_value_id(db_name: str, collection: str, obj_name: str, value: Any) -> int | None:
     """
     Objective:
     The objective of the function is to retrieve the id of a given value from a specific object in a collection of a database.
@@ -85,7 +85,7 @@ def _get_value_id(db_name: str, collection: str, object: str, value: Any) -> int
     Inputs:
         - db_name: a string representing the name of the database to search for the value id.
         - collection: a string representing the name of the collection to search for the value id.
-        - object: a string representing the name of the object to search for the value id.
+        - obj_name: a string representing the name of the object to search for the value id.
         - value: any data type representing the value to search for the id.
     
     Flow:
@@ -105,17 +105,17 @@ def _get_value_id(db_name: str, collection: str, object: str, value: Any) -> int
     """
     DATABASE = _open_db(db_name=db_name)
     
-    if collection not in DATABASE or object not in DATABASE[collection] or 'values' not in DATABASE[collection][object]:
+    if collection not in DATABASE or obj_name not in DATABASE[collection] or 'values' not in DATABASE[collection][obj_name]:
         return None
     
-    for v in DATABASE[collection][object]['values']:
+    for v in DATABASE[collection][obj_name]['values']:
         if v[1] == value:
             return v[0]
     
     return None
 
 
-def _get_value_index(db_name: str, collection: str, object: str, id: int) -> int | None:
+def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> int | None:
     """
     Objective:
     The objective of the function is to return the index of a value in a specific object of a collection in a given database, based on the provided id.
@@ -123,7 +123,7 @@ def _get_value_index(db_name: str, collection: str, object: str, id: int) -> int
     Inputs:
         - db_name: a string representing the name of the database to search for the value index.
         - collection: a string representing the name of the collection where the object is located.
-        - object: a string representing the name of the object where the value is located.
+        - obj_name: a string representing the name of the object where the value is located.
         - id: an integer representing the id of the value to search for.
     
     Flow:
@@ -143,16 +143,16 @@ def _get_value_index(db_name: str, collection: str, object: str, id: int) -> int
         - The function assumes that the database, collection, object, and value with the provided names and id exist.
         - The function does not handle any errors that may occur during the file operations or the search for the value index.
     """
-    if not isinstance(db_name, str) or not isinstance(collection, str) or not isinstance(object, str):
+    if not isinstance(db_name, str) or not isinstance(collection, str) or not isinstance(obj_name, str):
         raise ValueError('db_name, collection, and object must be strings')
     if not isinstance(id, int):
         raise ValueError('id must be an integer')
     DATABASE = _open_db(db_name=db_name)
-    if collection not in DATABASE or object not in DATABASE[collection] or 'values' not in DATABASE[collection][object]:
+    if collection not in DATABASE or obj_name not in DATABASE[collection] or 'values' not in DATABASE[collection][obj_name]:
         raise ValueError('Invalid collection, object, or database')
-    if 'values' not in DATABASE[collection][object]:
+    if 'values' not in DATABASE[collection][obj_name]:
         raise ValueError('No values found in object')
-    for index, v in enumerate(DATABASE[collection][object]['values']):
+    for index, v in enumerate(DATABASE[collection][obj_name]['values']):
         if v[0] == id:
             return index
     return None
@@ -213,14 +213,14 @@ def _does_collection_exists(collection: str, DB: dict) -> bool:
     return False
 
 
-def _object_exists(collection: str, object: str, DB: dict) -> bool:
+def _object_exists(collection: str, obj_name: str, DB: dict) -> bool:
     """
     Objective:
     The main objective of the function is to check if a given object exists in a specified collection of a parsed database and return a boolean value indicating the existence of the object.
 
     Inputs:
         - collection: a string representing the name of the collection to be checked
-        - object: a string representing the name of the object to be checked
+        - obj_name: a string representing the name of the object to be checked
         - DB: a dictionary representing the parsed database
 
     Flow:
@@ -235,12 +235,12 @@ def _object_exists(collection: str, object: str, DB: dict) -> bool:
         - The function is designed to work with a parsed database, which means that the database has already been processed and converted into a dictionary format
         - The function only checks for the existence of an object in a single collection, and not across multiple collections in the database.
     """
-    if object in DB[collection].keys():
+    if obj_name in DB[collection].keys():
         return True
     return False
 
 
-def _is_value_in(DB: dict, collection: str, object: str) -> bool:
+def _is_value_in(DB: dict, collection: str, obj_name: str) -> bool:
     """
     Objective:
     The objective of the function is to check if the first entry in a given collection exists in a database dictionary.
@@ -248,7 +248,7 @@ def _is_value_in(DB: dict, collection: str, object: str) -> bool:
     Inputs:
         - DB: a dictionary containing the database
         - collection: a string representing the name of the collection to add the value to
-        - object: a string representing the name of the table to add the value to
+        - obj_name: a string representing the name of the table to add the value to
 
     Flow:
         - Check if the first entry in the collection exists by accessing the 'values' key of the object in the collection
@@ -263,12 +263,12 @@ def _is_value_in(DB: dict, collection: str, object: str) -> bool:
         - The function only checks for the existence of the first entry in the collection
         - The function assumes that the 'values' key exists in the object in the collection
     """
-    if DB.get(collection, {}).get(object, {}).get('values', None):
+    if DB.get(collection, {}).get(obj_name, {}).get('values', None):
         return True
     return False
 
 
-def _is_value_exists(DB: dict, collection: str, object: str, value: Any) -> bool:
+def _is_value_exists(DB: dict, collection: str, obj_name: str, value: Any) -> bool:
     """
     @type collection: object
     @type DB: object
@@ -276,7 +276,7 @@ def _is_value_exists(DB: dict, collection: str, object: str, value: Any) -> bool
     """
     
     
-def _count(DATABASE: dict, collection: str, object: str) -> int:
+def _count(DATABASE: dict, collection: str, obj_name: str) -> int:
     """
     Objective:
     The objective of the function is to count the number of entries in a given collection in a database dictionary. If the first entry in the collection exists, the function returns the value of the first element in the last entry of the 'values' key of the object in the collection. Otherwise, the function returns 0.
@@ -284,7 +284,7 @@ def _count(DATABASE: dict, collection: str, object: str) -> int:
     Inputs:
         - DATABASE: a dictionary containing the database
         - collection: a string representing the name of the collection to count the entries in
-        - object: a string representing the name of the table to count the entries in
+        - obj_name: a string representing the name of the table to count the entries in
 
     Flow:
         - Check if the first entry in the collection exists by calling the _is_value_in function
@@ -298,7 +298,7 @@ def _count(DATABASE: dict, collection: str, object: str) -> int:
         - The function assumes that the 'values' key exists in the object in the collection
         - The function only counts the number of entries in the collection, and does not modify the database dictionary
     """
-    if _is_value_in(DB=DATABASE, collection=collection, object=object):
-        return DATABASE.get(collection, None).get(object, None).get('values', None)[-1][0]
+    if _is_value_in(DB=DATABASE, collection=collection, obj_name=obj_name):
+        return DATABASE.get(collection, None).get(obj_name, None).get('values', None)[-1][0]
     else:
         return 0

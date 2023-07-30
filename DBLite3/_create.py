@@ -49,7 +49,7 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
         raise CreationError(f'Error: {e}')
 
 
-def create_collection(db_name: str, collection: str, objects: list) -> None:
+def create_collection(db_name: str, collection: str, obj_name: list) -> None:
     """
     Objective:
     The objective of the create_collection function is to create a new collection in a given database with a unique name and a list of objects. The function checks if the collection already exists and raises an error if it does. Otherwise, it creates a new collection with the given objects and saves it to the database.
@@ -57,7 +57,7 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
     Inputs:
         - db_name: a string representing the name of the database where the collection will be created.
         - collection: a string representing the name of the new collection to be created.
-        - objects: a list of strings representing the names of the objects to be added to the new collection.
+        - obj_name: a list of strings representing the names of the objects to be added to the new collection.
 
     Flow:
         - The function opens the database with the given name using the _open_db function.
@@ -77,7 +77,7 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
     try:
         if not isinstance(collection, str) or not collection:
             raise ValueError('collection must be a non-empty string')
-        if not isinstance(objects, list) or not objects:
+        if not isinstance(obj_name, list) or not obj_name:
             raise ValueError('objects must be a non-empty list')
 
         try:
@@ -85,14 +85,14 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
         except OpenError as e:
             raise OpenError(f'Error: {e}')
 
-        if len(set(objects)) != len(objects):
+        if len(set(obj_name)) != len(obj_name):
             raise ValueError('objects parameter must contain only unique values')
 
         if _does_collection_exists(collection=collection, DB=DATABASE):
             raise CreationError(f'Collection with name: {collection} has already existed.')
         else:
             DATABASE[collection] = {}
-            for o in objects:
+            for o in obj_name:
                 DATABASE[collection][o] = {'values': None}
         try:
             _save_db(db_name=db_name, DB=DATABASE)
@@ -103,7 +103,7 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
         raise CreationError(f'Error: {e}')
 
 
-def create_collections(db_name: str, collections: list, objects: list) -> None:
+def create_collections(db_name: str, collections: list, obj_name: list) -> None:
     """
     Objective:
     The objective of the function is to create collections in a parsed database. The function takes in the name of the database, a list of collection names, and a list of object names. The function creates a new collection for each name in the collection list and adds objects to each collection.
@@ -111,7 +111,7 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
     Inputs:
         - db_name: a string representing the name of the database to create the collection in.
         - collections: a list of strings representing the names of the collections to be created.
-        - objects: a list of strings representing the names of the objects to be added to each collection.
+        - obj_name: a list of strings representing the names of the objects to be added to each collection.
     
     Flow:
         - The function opens the parsed database using the _open_db function.
@@ -130,7 +130,7 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
     try:
         if not isinstance(collections, list):
             raise TypeError('collections parameter must be a list')
-        if not isinstance(objects, list):
+        if not isinstance(obj_name, list):
             raise TypeError('objects parameter must be a list')
 
         try:
@@ -138,7 +138,7 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
         except OpenError as e:
             raise OpenError(f'Error: {e}')
 
-        if not collections or not objects:
+        if not collections or not obj_name:
             raise ValueError('collections and objects must not be empty')
 
         for collection in collections:
@@ -148,7 +148,7 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
                 raise CreationError(f'Collection with name: {collection} has already existed.')
             else:
                 DATABASE[collection] = {}
-                for o in objects:
+                for o in obj_name:
                     if not isinstance(o, str):
                         raise TypeError('Object name must be a string')
                     DATABASE[collection][o] = {'values': None}
@@ -163,7 +163,7 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
         raise CreationError(f'Error: {e}')
 
 
-def create_object(db_name: str, collection: str, object: str) -> None:
+def create_object(db_name: str, collection: str, obj_name: str) -> None:
     """
     Objective:
     The objective of the function is to create a new object in a specified collection of a given database. The function checks if the object already exists in the collection and raises an error if it does. Otherwise, it adds the object to the collection with an empty 'values' field and saves the updated database.
@@ -171,7 +171,7 @@ def create_object(db_name: str, collection: str, object: str) -> None:
     Inputs:
         - db_name: a string representing the name of the database to which the object is to be added.
         - collection: a string representing the name of the collection in which the object is to be added.
-        - object: a string representing the name of the object to be added.
+        - obj_name: a string representing the name of the object to be added.
 
     Flow:
         - The function first opens the database using the _open_db function.
@@ -192,7 +192,7 @@ def create_object(db_name: str, collection: str, object: str) -> None:
             raise ValueError('db_name must be a non-empty string')
         if not isinstance(collection, str) or not collection:
             raise ValueError('collection must be a non-empty string')
-        if not isinstance(object, str) or not object:
+        if not isinstance(obj_name, str) or not obj_name:
             raise ValueError('object must be a non-empty string')
 
         try:
@@ -203,10 +203,10 @@ def create_object(db_name: str, collection: str, object: str) -> None:
         if collection not in DATABASE:
             raise ValueError(f'Collection {collection} does not exist in the database.')
 
-        if _object_exists(collection=collection, object=object, DB=DATABASE):
-            raise CreationError(f'Object with name: {object} has already existed.')
+        if _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
+            raise CreationError(f'Object with name: {obj_name} has already existed.')
         else:
-            DATABASE[collection][object] = {'values': None}
+            DATABASE[collection][obj_name] = {'values': None}
 
         try:
             _save_db(db_name=db_name, DB=DATABASE)

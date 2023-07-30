@@ -41,7 +41,7 @@ class TestInsertOneInOneCollection:
         object = 'test_object'
         value = 'test_value'
         with pytest.raises(FileNotFoundError):
-            insert_one_in_one_collection(db_name=db_name, collection=collection, object=object, value=value)
+            insert_one_in_one_collection(db_name=db_name, collection=collection, obj_name=object, value=value)
 
     def test_collection_does_not_exist(self):
         db_name = 'test_db'
@@ -52,7 +52,7 @@ class TestInsertOneInOneCollection:
         create_db(db_name)
         create_collection(db_name, collection, object)
         with pytest.raises(KeyError):
-            insert_one_in_one_collection(db_name=db_name, collection=collection1, object=object[0], value=value)
+            insert_one_in_one_collection(db_name=db_name, collection=collection1, obj_name=object[0], value=value)
         os.remove(f'{db_name}.json')
 
     def test_object_does_not_exist(self):
@@ -64,7 +64,7 @@ class TestInsertOneInOneCollection:
         create_db(db_name)
         create_collection(db_name, collection, obj)
         with pytest.raises(KeyError):
-            insert_one_in_one_collection(db_name=db_name, collection=collection, object=object, value=value)
+            insert_one_in_one_collection(db_name=db_name, collection=collection, obj_name=object, value=value)
         os.remove(f'{db_name}.json')
 
     @pytest.mark.parametrize('db_name', (123, True, list))

@@ -4,7 +4,7 @@ from DBLite3._funcs import _open_db, _save_db
 from DBLite3._exceptions import DeleteError, SaveError
 
 
-def alter_object(db_name: str, collection: str, object_old: str, object_new: str) -> None:
+def alter_object(db_name: str, collection: str, obj_name_old: str, object_name_new: str) -> None:
     """
     Objective:
     The objective of the function is to modify the name of an object in a collection of a given database.
@@ -12,8 +12,8 @@ def alter_object(db_name: str, collection: str, object_old: str, object_new: str
     Inputs:
         - db_name: a string representing the name of the database to be modified.
         - collection: a string representing the name of the collection to be modified.
-        - object_old: a string representing the old name of the object to be modified.
-        - object_new: a string representing the new name of the object to be modified.
+        - obj_name_old: a string representing the old name of the object to be modified.
+        - object_name_new: a string representing the new name of the object to be modified.
     
     Flow:
         - Open the database using the _open_db function.
@@ -32,12 +32,12 @@ def alter_object(db_name: str, collection: str, object_old: str, object_new: str
     if collection not in DATABASE:
         raise KeyError(f'{collection} does not exist in {db_name}')
     
-    if object_old not in DATABASE[collection]:
-        raise KeyError(f'{object_old} does not exist in {collection}')
+    if obj_name_old not in DATABASE[collection]:
+        raise KeyError(f'{obj_name_old} does not exist in {collection}')
     
     try:
-        DATABASE[collection][object_new] = DATABASE[collection][object_old]
-        del DATABASE[collection][object_old]
+        DATABASE[collection][object_name_new] = DATABASE[collection][obj_name_old]
+        del DATABASE[collection][obj_name_old]
         _save_db(db_name=db_name, DB=DATABASE)
     except (DeleteError, SaveError) as e:
         print(f'Error deleting/saving object: {e}')

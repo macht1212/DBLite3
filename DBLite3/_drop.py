@@ -67,7 +67,7 @@ def drop_collection(db_name: str, collection: str) -> None:
         raise DropError(f'Collection {collection} does not exist.')
 
 
-def drop_object(db_name: str, collection: str, object: str) -> None:
+def drop_object(db_name: str, collection: str, obj_name: str) -> None:
     """
     Objective:
     The objective of the 'drop_object' function is to delete a specified object from a specified collection in a given database. The function checks if the object exists in the collection and raises an error if it does not. If the object exists, it is deleted from the collection, and the modified database is saved.
@@ -75,7 +75,7 @@ def drop_object(db_name: str, collection: str, object: str) -> None:
     Inputs:
         - db_name: a string representing the name of the database to be modified
         - collection: a string representing the name of the collection to be modified
-        - object: a string representing the name of the object to be dropped
+        - obj_name: a string representing the name of the object to be dropped
 
     Flow:
         - The function takes in the inputs db_name, collection, and object
@@ -98,15 +98,15 @@ def drop_object(db_name: str, collection: str, object: str) -> None:
             raise ValueError('db_name must be a non-empty string')
         if not isinstance(collection, str) or not collection:
             raise ValueError('collection must be a non-empty string')
-        if not isinstance(object, str) or not object:
+        if not isinstance(obj_name, str) or not obj_name:
             raise ValueError('object must be a non-empty string')
 
         DATABASE = _open_db(db_name=db_name)
-        if _object_exists(collection=collection, object=object, DB=DATABASE):
-            del (DATABASE[collection][object])
+        if _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
+            del (DATABASE[collection][obj_name])
             _save_db(db_name=db_name, DB=DATABASE)
             return
         else:
-            raise DropError(f'Object {object} does not exist.')
+            raise DropError(f'Object {obj_name} does not exist.')
     except Exception as e:
         raise DropError(f'Error dropping object: {e}')

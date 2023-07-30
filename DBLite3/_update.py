@@ -4,7 +4,7 @@ from DBLite3 import SaveError, OpenError
 from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
-def update_value_by_id(db_name: str, collection: str, object: str, id: int, value: Any) -> None:
+def update_value_by_id(db_name: str, collection: str, obj_name: str, id: int, value: Any) -> None:
     """
     Objective:
     The objective of the function is to update a single value in a specific object of a collection in a given database, based on the provided id.
@@ -12,7 +12,7 @@ def update_value_by_id(db_name: str, collection: str, object: str, id: int, valu
     Inputs:
         - db_name: a string representing the name of the database to be modified.
         - collection: a string representing the name of the collection to be modified.
-        - object: a string representing the name of the object to be modified.
+        - obj_name: a string representing the name of the object to be modified.
         - id: an integer representing the id of the value to be modified.
         - value: any type representing the new value to be assigned to the specified id.
     
@@ -31,18 +31,18 @@ def update_value_by_id(db_name: str, collection: str, object: str, id: int, valu
     """
     DATABASE = _open_db(db_name=db_name)
     
-    if not isinstance(collection, str) or not isinstance(object, str) or not isinstance(id, int):
+    if not isinstance(collection, str) or not isinstance(obj_name, str) or not isinstance(id, int):
         raise TypeError('collection, object, and id must be str and int, respectively')
     
-    if collection not in DATABASE or object not in DATABASE[collection]:
+    if collection not in DATABASE or obj_name not in DATABASE[collection]:
         raise ValueError('Invalid collection or object')
     
-    index = _get_value_index(db_name=db_name, collection=collection, object=object, id=id)
+    index = _get_value_index(db_name=db_name, collection=collection, obj_name=obj_name, id=id)
     
     if index is None:
         raise ValueError('Value with provided id does not exist')
     
-    DATABASE[collection][object]['values'][index][1] = value
+    DATABASE[collection][obj_name]['values'][index][1] = value
     
     try:
         _save_db(db_name=db_name, DB=DATABASE)
@@ -50,7 +50,7 @@ def update_value_by_id(db_name: str, collection: str, object: str, id: int, valu
         raise SaveError(f'Error saving database: {e}')
 
 
-def update_values_by_id(db_name: str, collection: str, object: str, id: list, values: list) -> None:
+def update_values_by_id(db_name: str, collection: str, obj_name: str, id: list, values: list) -> None:
     """
     Objective:
     The objective of the function is to update multiple values in a specific object of a collection in a given database, based on the provided identifiers.
@@ -58,7 +58,7 @@ def update_values_by_id(db_name: str, collection: str, object: str, id: list, va
     Inputs:
     - db_name: a string representing the name of the database to be modified.
     - collection: a string representing the name of the collection to be modified.
-    - object: a string representing the name of the object to be modified.
+    - obj_name: a string representing the name of the object to be modified.
     - id: a list of integers representing the identifiers of the values to be modified.
     - values: a list of the new values to replace the old ones.
 
@@ -81,16 +81,16 @@ def update_values_by_id(db_name: str, collection: str, object: str, id: list, va
 
     DATABASE = _open_db(db_name=db_name)
     
-    if collection not in DATABASE or object not in DATABASE[collection]:
+    if collection not in DATABASE or obj_name not in DATABASE[collection]:
         raise ValueError('Invalid collection or object')
     
     for i, id in enumerate(id):
-        index = _get_value_index(db_name=db_name, collection=collection, object=object, id=id)
+        index = _get_value_index(db_name=db_name, collection=collection, obj_name=obj_name, id=id)
         
         if index is None:
             raise ValueError(f'Value with id {id} not found in database')
         
-        DATABASE[collection][object]['values'][index][1] = values[i]
+        DATABASE[collection][obj_name]['values'][index][1] = values[i]
     
     try:
         _save_db(db_name=db_name, DB=DATABASE)

@@ -1,8 +1,11 @@
-from DBLite3._exceptions import SelectError
-from DBLite3._funcs import _open_db
+import numbers
+from typing import Any
+
+from DBLite3._exceptions import SelectError, OpenError
+from DBLite3._funcs import _open_db, _is_value_in
 
 
-def select_all_values_with_index(db_name: str, collection: str, object: str) -> list:
+def select_all_values_with_index(db_name: str, collection: str, obj_name: str) -> list:
     """
     Objective:
     The objective of the function is to retrieve all values of a specific object in a collection from a given database and return them as a list with their corresponding indices.
@@ -10,7 +13,7 @@ def select_all_values_with_index(db_name: str, collection: str, object: str) -> 
     Inputs:
         - db_name: a string representing the name of the database to retrieve the data from.
         - collection: a string representing the name of the collection to retrieve the data from.
-        - object: a string representing the name of the object to retrieve the data from.
+        - obj_name: a string representing the name of the object to retrieve the data from.
 
     Flow:
         - Call the _open_db function to retrieve the database dictionary object.
@@ -32,13 +35,13 @@ def select_all_values_with_index(db_name: str, collection: str, object: str) -> 
 
     if collection not in DATABASE:
         raise KeyError(f'Collection {collection} does not exist in the database')
-    if object not in DATABASE[collection]:
-        raise KeyError(f'Object {object} does not exist in collection {collection}')
+    if obj_name not in DATABASE[collection]:
+        raise KeyError(f'Object {obj_name} does not exist in collection {collection}')
 
-    return [f'Index: {value[0]}, value: {value[1]}' for value in DATABASE[collection][object]['values']]
+    return [f'Index: {value[0]}, value: {value[1]}' for value in DATABASE[collection][obj_name]['values']]
 
 
-def select_all_values_without_index(db_name: str, collection: str, object: str) -> list:
+def select_all_values_without_index(db_name: str, collection: str, obj_name: str) -> list:
     """
     Objective:
     The objective of the function is to retrieve all values of a given object in a collection from a specified database and return them as a list without their indices.
@@ -46,7 +49,7 @@ def select_all_values_without_index(db_name: str, collection: str, object: str) 
     Inputs:
         - db_name: a string representing the name of the database to retrieve the data from.
         - collection: a string representing the name of the collection to retrieve the data from.
-        - object: a string representing the name of the object to retrieve the data from.
+        - obj_name: a string representing the name of the object to retrieve the data from.
 
     Flow:
         - Call the _open_db function to retrieve the database.
@@ -68,13 +71,13 @@ def select_all_values_without_index(db_name: str, collection: str, object: str) 
 
     if collection not in DATABASE:
         raise KeyError(f'Collection {collection} does not exist in the database')
-    if object not in DATABASE[collection]:
-        raise KeyError(f'Object {object} does not exist in collection {collection}')
+    if obj_name not in DATABASE[collection]:
+        raise KeyError(f'Object {obj_name} does not exist in collection {collection}')
 
-    return [f'Value: {value[1]}' for value in DATABASE[collection][object]['values']]
+    return [f'Value: {value[1]}' for value in DATABASE[collection][obj_name]['values']]
 
 
-def size(db_name: str, collection: str, object: str) -> int:
+def size(db_name: str, collection: str, obj_name: str) -> int:
     """
     Objective:
     The objective of the "size" function is to return the number of elements in a specified object of a specified collection in a specified database.
@@ -82,7 +85,7 @@ def size(db_name: str, collection: str, object: str) -> int:
     Inputs:
         - db_name: a string representing the name of the database to count the data from.
         - collection: a string representing the name of the collection to count the data from.
-        - object: a string representing the name of the object to count the data from.
+        - obj_name: a string representing the name of the object to count the data from.
     
     Flow:
         - Call the "_open_db" function to open the specified database.
@@ -97,9 +100,9 @@ def size(db_name: str, collection: str, object: str) -> int:
         - The function uses the "_open_db" function to open the database and returns the number of elements in the specified object.
     """
     with _open_db(db_name=db_name) as DATABASE:
-        if collection not in DATABASE or object not in DATABASE[collection]:
+        if collection not in DATABASE or obj_name not in DATABASE[collection]:
             raise ValueError('Invalid collection or object name')
-        return len(DATABASE[collection][object]['values'])
+        return len(DATABASE[collection][obj_name]['values'])
 
 
 def select_all_values_in_collection(db_name: str, collection: str) -> dict:
@@ -136,10 +139,46 @@ def select_all_values_in_collection(db_name: str, collection: str) -> dict:
 
 
 # TODO
-def gt(db_name: str, collection: str, object: str) -> list:
-    pass
+def gt(db_name: str, collection: str, obj_name: str, target: int | float) -> list:
+    """
+    Objective:
+    The objective of the 'gt' function is to retrieve a list of values and their indices from a specific collection and object in a database dictionary, where the value is greater than a given target value. The function also checks if the values are numeric and raises a custom SelectError if they are not.
+
+    Inputs:
+        - db_name: a string representing the name of the database to retrieve the values from.
+        - collection: a string representing the name of the collection to retrieve the values from.
+        - obj_name: a string representing the name of the object to retrieve the values from.
+        - target: an integer or float representing the target value to compare the retrieved values to.
+
+        Flow:
+        - The function first tries to open the database using the '_open_db' function and checks if the first value in the collection is numeric using the '_is_value_in' function.
+        - If the first value is not numeric, the function raises a SelectError.
+        - The function then retrieves a list of values and their indices from the specified collection and object in the database dictionary where the value is greater than the target value.
+        - The retrieved values and indices are returned as a list of lists.
+
+    Outputs:
+        - A list of lists containing the retrieved values and their indices where the value is greater than the target value.
+
+    Additional aspects:
+        - The function raises an OpenError if there is an issue opening the database.
+        - The function raises a SelectError if the retrieved values are not numeric.
+        - The function assumes that the specified collection and object exist in the database dictionary.
+    """
+    try:
+        DATABASE = _open_db(db_name=db_name)
+
+        if _is_value_in(DATABASE, collection, obj_name):
+            for value in DATABASE[collection][obj_name]['values']:
+                if not isinstance(value[1], numbers.Number):
+                    raise SelectError('This method is allowed only for numeric values.')
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
+    return [[f'Value: {v[1]}, index: {v[0]}'] for v in DATABASE[collection][obj_name]['values'] if v[1] > target]
+
+
 
 
 # TODO
-def lt(db_name: str, collection: str, object: str) -> list:
+def lt(db_name: str, collection: str, obj_name: str, target: int | float) -> list:
     pass

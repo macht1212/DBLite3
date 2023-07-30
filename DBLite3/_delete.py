@@ -2,7 +2,7 @@ from DBLite3 import DeleteError
 from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
-def delete_value(db_name: str, collection: str, object: str, id: int) -> None:
+def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
     """
     Objective:
     The objective of the 'delete_value' function is to delete a value from a specific object in a collection of a given database, based on the provided id.
@@ -10,7 +10,7 @@ def delete_value(db_name: str, collection: str, object: str, id: int) -> None:
     Inputs:
         - db_name: a string representing the name of the database to delete the value from.
         - collection: a string representing the name of the collection to delete the value from.
-        - object: a string representing the name of the object to delete the value from.
+        - obj_name: a string representing the name of the object to delete the value from.
         - id: an integer representing the id of the value to delete.
         
     Flow:
@@ -31,20 +31,20 @@ def delete_value(db_name: str, collection: str, object: str, id: int) -> None:
         - The function does not handle any errors that may occur during the file operations or the search for the value index.
     """
     try:
-        index = _get_value_index(db_name=db_name, collection=collection, object=object, id=id)
+        index = _get_value_index(db_name=db_name, collection=collection, obj_name=obj_name, id=id)
         DATABASE = _open_db(db_name=db_name)
         
-        if collection not in DATABASE or object not in DATABASE[collection]:
+        if collection not in DATABASE or obj_name not in DATABASE[collection]:
             raise ValueError('Invalid collection or object')
         
-        if 'values' not in DATABASE[collection][object]:
+        if 'values' not in DATABASE[collection][obj_name]:
             raise ValueError('No values found in object')
         
         if index is not None:
-            if len(DATABASE[collection][object]['values']) == 1:
-                DATABASE[collection][object]['values'] = None
+            if len(DATABASE[collection][obj_name]['values']) == 1:
+                DATABASE[collection][obj_name]['values'] = None
             else:
-                del DATABASE[collection][object]['values'][index]
+                del DATABASE[collection][obj_name]['values'][index]
         
         _save_db(db_name=db_name, DB=DATABASE)
     
@@ -52,7 +52,7 @@ def delete_value(db_name: str, collection: str, object: str, id: int) -> None:
         raise DeleteError(f'Error deleting value: {e}')
 
 
-def delete_all_values(db_name: str, collection: str, object: str) -> None:
+def delete_all_values(db_name: str, collection: str, obj_name: str) -> None:
     """
     Objective:
     The objective of the 'delete_all_values' function is to delete all values from a specific object in a specific collection of a given database. The function uses the '_open_db' and '_save_db' functions from the same module to open and save the modified database. The function now handles any errors that may occur during the file operations.
@@ -60,7 +60,7 @@ def delete_all_values(db_name: str, collection: str, object: str) -> None:
     Inputs:
         - db_name: a string representing the name of the database to delete values from.
         - collection: a string representing the name of the collection to delete values from.
-        - object: a string representing the name of the object to delete values from.
+        - obj_name: a string representing the name of the object to delete values from.
 
     Flow:
         - Open the database with the given name using the '_open_db' function.
@@ -78,9 +78,9 @@ def delete_all_values(db_name: str, collection: str, object: str) -> None:
     """
     DATABASE = _open_db(db_name=db_name)
     
-    if collection in DATABASE and object in DATABASE[collection]:
+    if collection in DATABASE and obj_name in DATABASE[collection]:
         try:
-            DATABASE[collection][object]['values'] = None
+            DATABASE[collection][obj_name]['values'] = None
             _save_db(db_name=db_name, DB=DATABASE)
         except Exception as e:
             raise DeleteError(f'Error deleting values: {e}')
