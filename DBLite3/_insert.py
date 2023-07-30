@@ -30,22 +30,31 @@ def insert_one_in_one_collection(db_name: str, collection: str, object: str, val
         - The function does not handle any errors that may occur during the database operations
     """
 
+    if not isinstance(db_name, str):
+        raise KeyError('DB name must be a string')
+    if not isinstance(collection, str):
+        raise KeyError('Collection name must be a string')
+    if not isinstance(object, str):
+        raise KeyError('Object name must be a string')
+
     try:
         DATABASE = _open_db(db_name=db_name)
     except OpenError as e:
         raise OpenError(f'Error: {e}')
 
-    if collection not in DATABASE or object not in DATABASE[collection]:
-        raise KeyError(f'Collection {collection} or object {object} not found in database')
+    if collection not in DATABASE.keys():
+        raise KeyError(f'Collection {collection} not found in database')
+    if object not in DATABASE[collection].keys():
+        raise KeyError(f'Object {object} not found in database')
 
     count = _count(DATABASE=DATABASE, collection=collection, object=object)
 
     try:
         if DATABASE[collection][object]['values'] is None:
             DATABASE[collection][object]['values'] = []
-            DATABASE[collection][object]['values'].append((count + 1, value))
+            DATABASE[collection][object]['values'].append([count + 1, value])
         else:
-            DATABASE[collection][object]['values'].append((count + 1, value))
+            DATABASE[collection][object]['values'].append([(count + 1), value])
     except InsertError as e:
         raise InsertError(f'Error: {e}')
 
@@ -84,6 +93,15 @@ def insert_many_in_one_collection(db_name: str, collection: str, object: str, va
         - The function overwrites the existing file with the same name if it already exists
         - The function does not handle any errors that may occur during the file operations
     """
+    if not isinstance(db_name, str):
+        raise KeyError('DB name must be a string')
+    if not isinstance(collection, str):
+        raise KeyError('Collection name must be a string')
+    if not isinstance(object, str):
+        raise KeyError('Object name must be a string')
+    if not isinstance(values, list):
+        raise KeyError('Values must be a list')
+
     try:
         DATABASE = _open_db(db_name=db_name)
     except OpenError as e:
@@ -97,9 +115,10 @@ def insert_many_in_one_collection(db_name: str, collection: str, object: str, va
 
     try:
         if _is_value_in(DB=DATABASE, collection=collection, object=object):
-            DATABASE[collection][object]['values'].append([[count + i + 1, values[i]] for i, e in enumerate(values)])
+            for value in list([count + i + 1, values[i]] for i, e in enumerate(values)):
+                DATABASE[collection][object]['values'].append(value)
         else:
-            DATABASE[collection][object]['values'] = [(1 + i, values[i]) if i == 0 else [count + i + 1, values[i]] for
+            DATABASE[collection][object]['values'] = [[1 + i, values[i]] if i == 0 else [count + i + 1, values[i]] for
                                                       i, e in enumerate(values)]
     except InsertError as e:
         raise InsertError(f'Error: {e}')
@@ -140,13 +159,20 @@ def insert_one_in_many_collections(db_name: str, collections: list, object: str,
         - The function uses the 'enumerate' function to get the index of each collection in the list of collections
         - The function raises a 'SaveError' if there is an error while saving the updated database
     """
+    if not isinstance(db_name, str):
+        raise KeyError('DB name must be a string')
+    if not isinstance(collections, list):
+        raise KeyError('Collection must be a list')
+    if not isinstance(object, str):
+        raise KeyError('Object must be a string')
+
     try:
         DATABASE = _open_db(db_name=db_name)
     except OpenError as e:
         print(f'Error: {e}')
         return
 
-    for i, collection in enumerate(collections):
+    for collection in collections:
 
         if collection not in DATABASE or object not in DATABASE[collection]:
             raise KeyError(f'Collection {collection} or object {object} not found in database')
@@ -154,7 +180,7 @@ def insert_one_in_many_collections(db_name: str, collections: list, object: str,
         count = _count(DATABASE=DATABASE, collection=collection, object=object)
 
         if _is_value_in(DB=DATABASE, collection=collection, object=object):
-            DATABASE[collection][object]['values'].append((count + 1 + i, value))
+            DATABASE[collection][object]['values'].append([count + 1, value])
         else:
             DATABASE[collection][object]['values'] = [(1, value)]
 
@@ -164,4 +190,3 @@ def insert_one_in_many_collections(db_name: str, collections: list, object: str,
         raise SaveError(f'Error: {e}')
 
     return
-

@@ -299,6 +299,6 @@ def _count(DATABASE: dict, collection: str, object: str) -> int:
         - The function only counts the number of entries in the collection, and does not modify the database dictionary
     """
     if _is_value_in(DB=DATABASE, collection=collection, object=object):
-        return DATABASE.get(collection, None).get(object, None).get('values', None)[-1]
+        return DATABASE.get(collection, None).get(object, None).get('values', None)[-1][0]
     else:
         return 0

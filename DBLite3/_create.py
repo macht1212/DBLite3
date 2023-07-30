@@ -6,46 +6,47 @@ from DBLite3._exceptions import CreationError, SaveError, OpenError
 
 def create_db(db_name: str, if_exists: bool = False) -> None:
     """
-    Objective: The objective of the create_db function is to create a new database in the base directory of the 
-    project. The function takes in the name of the database as a string and an optional boolean parameter if_exists, 
-    which is responsible for skipping an exception when creating a database with an already existing name. 
-    
+    Objective:
+    The objective of the create_db function is to create a new database in the base directory of the project. The function takes in the name of the database as a string and an optional boolean parameter if_exists, which is responsible for skipping an exception when creating a database with an already existing name.
+
     Inputs:
         - db_name (str): the name of the database to be created. The name of the database must be unique in the project, otherwise the file will be overwritten.
         - if_exists (bool): an optional parameter responsible for skipping an exception when creating a database with an already existing name.
-    
+
     Flow:
         - The function first checks if the database already exists using the _db_exists function.
         - If the database exists and if_exists is True, the function does nothing and returns None.
         - If the database exists and if_exists is False, the function raises a CreationError with a message indicating that the database already exists.
         - If the database does not exist, the function creates a new JSON file with the name of the database and writes an empty dictionary to it.
-    
+
     Outputs:
         - None: the function does not return anything.
-    
+
     Additional aspects:
         - The function uses the _db_exists function to check if the database already exists.
         - The function raises a CreationError if the database already exists and if_exists is False.
         - The function writes an empty dictionary to the new JSON file to initialize it.
         - The function assumes that the database is stored in a JSON file with the same name as the database name.
     """
-    if not isinstance(db_name, str) or not db_name:
-        raise ValueError('db_name must be a non-empty string')
-    
-    file_path = os.path.join(db_name + '.json')
-    
-    if _db_exists(db_name=db_name) and if_exists:
-        pass
-    elif _db_exists(db_name=db_name):
-        raise CreationError(f'DATABASE with name: {db_name} has already existed')
-    else:
-        try:
-            with open(file_path, 'w') as f:
-                json.dump({}, f)
-        except IOError as e:
-            raise CreationError(f'Error creating database: {e}')
-    
-    return
+    try:
+        if not isinstance(db_name, str) or not db_name:
+            raise ValueError('db_name must be a non-empty string')
+
+        file_path = os.path.join(db_name + '.json')
+
+        if _db_exists(db_name=db_name) and if_exists:
+            pass
+        elif _db_exists(db_name=db_name):
+            raise CreationError(f'DATABASE with name: {db_name} has already existed')
+        else:
+            try:
+                with open(file_path, 'w') as f:
+                    json.dump({}, f)
+            except IOError as e:
+                raise CreationError(f'Error creating database: {e}')
+        return
+    except CreationError as e:
+        raise CreationError(f'Error: {e}')
 
 
 def create_collection(db_name: str, collection: str, objects: list) -> None:
@@ -73,30 +74,33 @@ def create_collection(db_name: str, collection: str, objects: list) -> None:
         - The function overwrites the existing database file with the updated version.
         - The function raises ValueErrors if the inputs are not of the expected type or format.
     """
-
-    DATABASE = _open_db(db_name=db_name)
-    
-    if not isinstance(collection, str) or not collection:
-        raise ValueError('collection must be a non-empty string')
-    
-    if not isinstance(objects, list) or not objects:
-        raise ValueError('objects must be a non-empty list')
-    
-    if len(set(objects)) != len(objects):
-        raise ValueError('objects parameter must contain only unique values')
-    
     try:
+        if not isinstance(collection, str) or not collection:
+            raise ValueError('collection must be a non-empty string')
+        if not isinstance(objects, list) or not objects:
+            raise ValueError('objects must be a non-empty list')
+
+        try:
+            DATABASE = _open_db(db_name=db_name)
+        except OpenError as e:
+            raise OpenError(f'Error: {e}')
+
+        if len(set(objects)) != len(objects):
+            raise ValueError('objects parameter must contain only unique values')
+
         if _does_collection_exists(collection=collection, DB=DATABASE):
             raise CreationError(f'Collection with name: {collection} has already existed.')
         else:
             DATABASE[collection] = {}
             for o in objects:
                 DATABASE[collection][o] = {'values': None}
-        _save_db(db_name=db_name, DB=DATABASE)
-    except (CreationError, SaveError, OpenError) as e:
-        print(f'Error creating collection: {e}')
-    
-    return
+        try:
+            _save_db(db_name=db_name, DB=DATABASE)
+        except SaveError as e:
+            raise SaveError(f'Error {e}')
+
+    except CreationError as e:
+        raise CreationError(f'Error: {e}')
 
 
 def create_collections(db_name: str, collections: list, objects: list) -> None:
@@ -123,34 +127,40 @@ def create_collections(db_name: str, collections: list, objects: list) -> None:
         - The function assumes that the database has already been parsed and is represented as a dictionary.
         - The function only creates collections and does not perform any other operations on them.
     """
-    DATABASE = _open_db(db_name=db_name)
-    
-    if not isinstance(collections, list):
-        raise TypeError('collections parameter must be a list')
-    if not isinstance(objects, list):
-        raise TypeError('objects parameter must be a list')
-    
-    if not collections or not objects:
-        raise ValueError('collections and objects must not be empty')
-    
-    for collection in collections:
-        if not isinstance(collection, str):
-            raise TypeError('Collection name must be a string')
-        if _does_collection_exists(collection=collection, DB=DATABASE):
-            raise CreationError(f'Collection with name: {collection} has already existed.')
-        else:
-            DATABASE[collection] = {}
-            for o in objects:
-                if not isinstance(o, str):
-                    raise TypeError('Object name must be a string')
-                DATABASE[collection][o] = {'values': None}
-    
     try:
-        _save_db(db_name=db_name, DB=DATABASE)
-    except SaveError as e:
-        raise CreationError(f'Error creating collection: {e}')
-    
-    return
+        if not isinstance(collections, list):
+            raise TypeError('collections parameter must be a list')
+        if not isinstance(objects, list):
+            raise TypeError('objects parameter must be a list')
+
+        try:
+            DATABASE = _open_db(db_name=db_name)
+        except OpenError as e:
+            raise OpenError(f'Error: {e}')
+
+        if not collections or not objects:
+            raise ValueError('collections and objects must not be empty')
+
+        for collection in collections:
+            if not isinstance(collection, str):
+                raise TypeError('Collection name must be a string')
+            if _does_collection_exists(collection=collection, DB=DATABASE):
+                raise CreationError(f'Collection with name: {collection} has already existed.')
+            else:
+                DATABASE[collection] = {}
+                for o in objects:
+                    if not isinstance(o, str):
+                        raise TypeError('Object name must be a string')
+                    DATABASE[collection][o] = {'values': None}
+
+        try:
+            _save_db(db_name=db_name, DB=DATABASE)
+        except SaveError as e:
+            raise SaveError(f'Error creating collection: {e}')
+        return
+
+    except CreationError as e:
+        raise CreationError(f'Error: {e}')
 
 
 def create_object(db_name: str, collection: str, object: str) -> None:
@@ -185,7 +195,10 @@ def create_object(db_name: str, collection: str, object: str) -> None:
         if not isinstance(object, str) or not object:
             raise ValueError('object must be a non-empty string')
 
-        DATABASE = _open_db(db_name=db_name)
+        try:
+            DATABASE = _open_db(db_name=db_name)
+        except OpenError as e:
+            raise OpenError(f'Error: {e}')
 
         if collection not in DATABASE:
             raise ValueError(f'Collection {collection} does not exist in the database.')
@@ -195,7 +208,10 @@ def create_object(db_name: str, collection: str, object: str) -> None:
         else:
             DATABASE[collection][object] = {'values': None}
 
-        _save_db(db_name=db_name, DB=DATABASE)
+        try:
+            _save_db(db_name=db_name, DB=DATABASE)
+        except SaveError as e:
+            raise SaveError(f'Error creating collection: {e}')
 
-    except (OpenError, SaveError) as e:
+    except CreationError as e:
         raise CreationError(f'Error creating object: {e}')
