@@ -2,10 +2,10 @@ import numbers
 from typing import Any
 
 from DBLite3._exceptions import SelectError, OpenError
-from DBLite3._funcs import _open_db, _is_value_in
+from DBLite3._funcs import _open_db, _is_value_in, _object_exists, _collection_exists
 
 
-def select_all_values_with_index(db_name: str, collection: str, obj_name: str) -> list:
+def select_all_values_with_index(db_name: str, collection: str, obj_name: str) -> dict:
     """
     Objective:
     The objective of the function is to retrieve all values of a specific object in a collection from a given database and return them as a list with their corresponding indices.
@@ -30,16 +30,20 @@ def select_all_values_with_index(db_name: str, collection: str, obj_name: str) -
     """
     try:
         DATABASE = _open_db(db_name=db_name)
-    except FileNotFoundError:
-        raise ValueError(f'{db_name}.json does not exist')
+    except OpenError:
+        raise OpenError(f'{db_name}.json does not exist')
 
     if collection not in DATABASE:
         raise KeyError(f'Collection {collection} does not exist in the database')
     if obj_name not in DATABASE[collection]:
         raise KeyError(f'Object {obj_name} does not exist in collection {collection}')
 
-    return [f'Index: {value[0]}, value: {value[1]}' for value in DATABASE[collection][obj_name]['values']]
+    if not _collection_exists(collection=collection, DB=DATABASE):
+        raise SelectError(f'Collection {collection} does not exist in Database.')
+    if not _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
+        raise SelectError(f'Object {obj_name} does not exist in Database.')
 
+    return {{value[0]}: value[1] for value in DATABASE[collection][obj_name]['values']}
 
 def select_all_values_without_index(db_name: str, collection: str, obj_name: str) -> list:
     """
@@ -74,7 +78,7 @@ def select_all_values_without_index(db_name: str, collection: str, obj_name: str
     if obj_name not in DATABASE[collection]:
         raise KeyError(f'Object {obj_name} does not exist in collection {collection}')
 
-    return [f'Value: {value[1]}' for value in DATABASE[collection][obj_name]['values']]
+    return [value[1] for value in DATABASE[collection][obj_name]['values']]
 
 
 def size(db_name: str, collection: str, obj_name: str) -> int:
@@ -127,18 +131,20 @@ def select_all_values_in_collection(db_name: str, collection: str) -> dict:
         - The function raises a ValueError if the input parameters are not valid strings.
         - The function raises a ValueError if there is an error retrieving data from the specified collection in the given database.
     """
+    if not isinstance(db_name, str) or not db_name:
+        raise ValueError('db_name must be a non-empty string')
+    if not isinstance(collection, str) or not collection:
+        raise ValueError('collection must be a non-empty string')
+
     try:
-        if not isinstance(db_name, str) or not db_name:
-            raise ValueError('db_name must be a non-empty string')
-        if not isinstance(collection, str) or not collection:
-            raise ValueError('collection must be a non-empty string')
         DATABASE = _open_db(db_name=db_name)
-        return {obj['id']: obj for obj in DATABASE[collection]}
-    except (FileNotFoundError, KeyError) as e:
-        raise ValueError(f'Error retrieving data from {collection} in {db_name}: {e}')
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
+    return {obj: obj['values'] for obj in DATABASE[collection]}
 
 
-def select_value_by_id_with_index(db_name: str, collection: str, obj_name: str, id: int) -> Any:
+def select_value_by_id_with_index(db_name: str, collection: str, obj_name: str, id: int) -> dict:
     """
     Objective:
     The objective of the function is to select a value from a specific collection and object in a database dictionary based on the given ID. The function returns the value and its index in the form of a string.
@@ -183,11 +189,15 @@ def select_value_by_id_with_index(db_name: str, collection: str, obj_name: str, 
     elif id > len(DATABASE[collection][obj_name]['values'])+1:
         raise SelectError("Length of values less then id number.")
     else:
-        answer = DATABASE[collection][obj_name]['values'][id-1]
-        return f'Value: {answer[1]}, Index: {answer[0]}'
+        return {obj_name:
+                    {
+                        'index': DATABASE[collection][obj_name]['values'][id-1][0],
+                        'value': DATABASE[collection][obj_name]['values'][id-1][1]
+                    }
+        }
 
 
-def select_value_by_id_without_index(db_name: str, collection: str, obj_name: str, id: int) -> Any:
+def select_value_by_id_without_index(db_name: str, collection: str, obj_name: str, id: int) -> dict:
     """
     Objective:
     The objective of the select_value_by_id_without_index function is to select a value from a specific collection and object in a database dictionary based on the given ID. The function returns the value and its index in the form of a string. The function raises custom exceptions if there are errors during the selection process.
@@ -231,8 +241,11 @@ def select_value_by_id_without_index(db_name: str, collection: str, obj_name: st
     elif id > len(DATABASE[collection][obj_name]['values']) + 1:
         raise SelectError("Length of values less then id number.")
     else:
-        answer = DATABASE[collection][obj_name]['values'][id - 1]
-        return f'Value: {answer[1]}'
+        return {obj_name:
+                    {
+                        'value': DATABASE[collection][obj_name]['values'][id - 1][1]
+                    }
+        }
 
 
 
@@ -332,3 +345,31 @@ def lt(db_name: str, collection: str, obj_name: str, target: numbers.Number) -> 
         raise OpenError(f'Error: {e}')
 
     return [[f'Value: {v[1]}, index: {v[0]}'] for v in DATABASE[collection][obj_name]['values'] if v[1] < target]
+
+
+def select_values_from_similar_objects_in_collections(db_name: str, obj_name: str) -> Any:
+
+    if not isinstance(db_name, str):
+        raise KeyError('DB name must be a string.')
+    if not isinstance(obj_name, str):
+        raise KeyError('Object name must be a string.')
+
+    try:
+        DATABASE = _open_db(db_name=db_name)
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
+    collections = DATABASE.keys()
+
+    answer = []
+
+    for collection in collections:
+        if obj_name in DATABASE[collection].keys():
+            answer.append({obj_name: DATABASE[collection][obj_name]['values']})
+        else:
+            answer.append({obj_name: 'None'})
+
+    return answer
+
+
+# def select

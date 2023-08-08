@@ -187,7 +187,7 @@ def _db_exists(db_name: str) -> bool:
     return False
 
 
-def _does_collection_exists(collection: str, DB: dict) -> bool:
+def _collection_exists(collection: str, DB: dict) -> bool:
     """
     Objective:
     The objective of the function is to check if a given collection exists in a parsed database and return a boolean value indicating its existence.

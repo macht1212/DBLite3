@@ -1,6 +1,6 @@
 import os
 import json
-from DBLite3._funcs import _open_db, _save_db, _db_exists, _does_collection_exists, _object_exists
+from DBLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
 from DBLite3._exceptions import CreationError, SaveError, OpenError
 
 
@@ -88,7 +88,7 @@ def create_collection(db_name: str, collection: str, obj_name: list) -> None:
         if len(set(obj_name)) != len(obj_name):
             raise ValueError('objects parameter must contain only unique values')
 
-        if _does_collection_exists(collection=collection, DB=DATABASE):
+        if _collection_exists(collection=collection, DB=DATABASE):
             raise CreationError(f'Collection with name: {collection} has already existed.')
         else:
             DATABASE[collection] = {}
@@ -144,7 +144,7 @@ def create_collections(db_name: str, collections: list, obj_name: list) -> None:
         for collection in collections:
             if not isinstance(collection, str):
                 raise TypeError('Collection name must be a string')
-            if _does_collection_exists(collection=collection, DB=DATABASE):
+            if _collection_exists(collection=collection, DB=DATABASE):
                 raise CreationError(f'Collection with name: {collection} has already existed.')
             else:
                 DATABASE[collection] = {}

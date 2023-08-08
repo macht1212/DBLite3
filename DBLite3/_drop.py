@@ -1,7 +1,7 @@
 import os
 
 from DBLite3._exceptions import DropError
-from DBLite3._funcs import _open_db, _save_db, _db_exists, _does_collection_exists, _object_exists
+from DBLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
 
 
 def drop_db(db_name: str) -> None:
@@ -59,7 +59,7 @@ def drop_collection(db_name: str, collection: str) -> None:
         raise ValueError('db_name and collection must be non-empty strings')
     
     DATABASE = _open_db(db_name=db_name)
-    if _does_collection_exists(collection=collection, DB=DATABASE):
+    if _collection_exists(collection=collection, DB=DATABASE):
         del (DATABASE[collection])
         _save_db(db_name=db_name, DB=DATABASE)
         return
