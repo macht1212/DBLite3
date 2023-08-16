@@ -45,6 +45,7 @@ def select_all_values_with_index(db_name: str, collection: str, obj_name: str) -
 
     return {{value[0]}: value[1] for value in DATABASE[collection][obj_name]['values']}
 
+
 def select_all_values_without_index(db_name: str, collection: str, obj_name: str) -> list:
     """
     Objective:
@@ -186,14 +187,14 @@ def select_value_by_id_with_index(db_name: str, collection: str, obj_name: str, 
 
     if not _is_value_in(DB=DATABASE, collection=collection, obj_name=obj_name):
         raise SelectError("Object is empty.")
-    elif id > len(DATABASE[collection][obj_name]['values'])+1:
+    elif id > len(DATABASE[collection][obj_name]['values']) + 1:
         raise SelectError("Length of values less then id number.")
     else:
         return {obj_name:
-                    {
-                        'index': DATABASE[collection][obj_name]['values'][id-1][0],
-                        'value': DATABASE[collection][obj_name]['values'][id-1][1]
-                    }
+            {
+                'index': DATABASE[collection][obj_name]['values'][id - 1][0],
+                'value': DATABASE[collection][obj_name]['values'][id - 1][1]
+            }
         }
 
 
@@ -242,11 +243,10 @@ def select_value_by_id_without_index(db_name: str, collection: str, obj_name: st
         raise SelectError("Length of values less then id number.")
     else:
         return {obj_name:
-                    {
-                        'value': DATABASE[collection][obj_name]['values'][id - 1][1]
-                    }
+            {
+                'value': DATABASE[collection][obj_name]['values'][id - 1][1]
+            }
         }
-
 
 
 def gt(db_name: str, collection: str, obj_name: str, target: numbers.Number) -> list:
@@ -298,8 +298,6 @@ def gt(db_name: str, collection: str, obj_name: str, target: numbers.Number) -> 
     return [[f'Value: {v[1]}, index: {v[0]}'] for v in DATABASE[collection][obj_name]['values'] if v[1] > target]
 
 
-
-
 def lt(db_name: str, collection: str, obj_name: str, target: numbers.Number) -> list:
     """
     Objective:
@@ -348,7 +346,6 @@ def lt(db_name: str, collection: str, obj_name: str, target: numbers.Number) -> 
 
 
 def select_values_from_similar_objects_in_collections(db_name: str, obj_name: str) -> Any:
-
     if not isinstance(db_name, str):
         raise KeyError('DB name must be a string.')
     if not isinstance(obj_name, str):
@@ -370,6 +367,5 @@ def select_values_from_similar_objects_in_collections(db_name: str, obj_name: st
             answer.append({obj_name: 'None'})
 
     return answer
-
 
 # def select

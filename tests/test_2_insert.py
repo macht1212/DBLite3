@@ -21,7 +21,7 @@ class TestInsertOneInOneCollection:
         insert_one_in_one_collection(db_name, collection, objects[0], value)
         DB = _open_db(db_name)
         assert DB[collection][objects[0]]['values'] == [[1, value]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_value_to_non_empty_object(self):
         db_name, collection, objects = 'test', 'col', ['obj']
@@ -33,7 +33,7 @@ class TestInsertOneInOneCollection:
         insert_one_in_one_collection(db_name, collection, objects[0], value2)
         DB = _open_db(db_name)
         assert DB[collection][objects[0]]['values'] == [[1, value1], [2, value2]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_database_does_not_exist(self):
         db_name = 'non_existent_db'
@@ -53,7 +53,7 @@ class TestInsertOneInOneCollection:
         create_collection(db_name, collection, object)
         with pytest.raises(KeyError):
             insert_one_in_one_collection(db_name=db_name, collection=collection1, obj_name=object[0], value=value)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_object_does_not_exist(self):
         db_name = 'test_db'
@@ -65,7 +65,7 @@ class TestInsertOneInOneCollection:
         create_collection(db_name, collection, obj)
         with pytest.raises(KeyError):
             insert_one_in_one_collection(db_name=db_name, collection=collection, obj_name=object, value=value)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('db_name', (123, True, list))
     def test_invalid_db_name(self, db_name):
@@ -80,7 +80,7 @@ class TestInsertOneInOneCollection:
         create_collection(db_name, col, object)
         with pytest.raises(KeyError):
             insert_one_in_one_collection(db_name, collection, object[0], value)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
 
 class TestInsertManyInOneCollection:
@@ -93,7 +93,7 @@ class TestInsertManyInOneCollection:
         insert_many_in_one_collection(db_name, collection, objects[0], values)
         DB = _open_db(db_name)
         assert DB[collection][objects[0]]['values'] == [[1, values[0]], [2, values[1]]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_positive_case_to_non_empty_obj(self):
         db_name, collection, objects = 'test', 'col', ['obj']
@@ -105,7 +105,7 @@ class TestInsertManyInOneCollection:
         insert_many_in_one_collection(db_name, collection, objects[0], values)
         DB = _open_db(db_name)
         assert DB[collection][objects[0]]['values'] == [[1, value], [2, values[0]], [3, values[1]]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_db(self):
         db_name, collection, objects = 'test', 'col', ['obj']
@@ -114,7 +114,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection, objects)
         with pytest.raises(FileNotFoundError):
             insert_many_in_one_collection('no_exist', collection, objects[0], values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_collection(self):
         db_name, collection, objects = 'test', 'col', ['obj']
@@ -123,7 +123,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, 'collection', objects[0], values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_object(self):
         db_name, collection, objects = 'test', 'col', ['obj']
@@ -132,7 +132,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, collection, 'objects[0]', values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('db_name', (123, True, list, set, dict))
     def test_db_name_non_str(self, db_name):
@@ -142,7 +142,7 @@ class TestInsertManyInOneCollection:
         create_collection(name, collection, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, collection, 'objects[0]', values)
-        os.remove(f'{name}.json')
+        os.remove(os.path.join(name + '.json'))
 
     @pytest.mark.parametrize('collection', (123, True, list, set, dict))
     def test_collection_non_str(self, collection):
@@ -152,7 +152,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection_, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, collection, 'objects[0]', values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('object', (123, True, list, set, dict))
     def test_object_non_str(self, object):
@@ -162,7 +162,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, collection, object, values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('values', (123, True, set, dict, str))
     def test_values_non_list(self, values):
@@ -171,7 +171,7 @@ class TestInsertManyInOneCollection:
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
             insert_many_in_one_collection(db_name, collection, objects[0], values)
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
 
 class TestInsertOneInManyCollections:
@@ -186,7 +186,7 @@ class TestInsertOneInManyCollections:
         DB = _open_db(db_name)
         for col in collection:
             assert DB[col][objects[0]]['values'] == [[1, values[0]]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_positive_case_to_non_empty_obj(self):
         db_name, collection, objects = 'test', ['col1', 'col2'], ['obj1', 'obj2']
@@ -202,7 +202,7 @@ class TestInsertOneInManyCollections:
         DB = _open_db(db_name)
         for col in collection:
             assert DB[col][objects[0]]['values'] == [[1, values[0]], [2, values[1]]]
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_db(self):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
@@ -213,7 +213,7 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(FileNotFoundError):
             insert_one_in_many_collections('no_exist', collection, objects[0], values[0])
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_collection(self):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
@@ -224,7 +224,7 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(KeyError):
             insert_one_in_many_collections(db_name, ['col', 'dw'], objects[0], values[0])
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     def test_insert_non_exist_object(self):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
@@ -235,7 +235,7 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(KeyError):
             insert_one_in_many_collections(db_name, collection, 'objects[0]', values[0])
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('db_name', (123, True, list, set, dict))
     def test_db_name_non_str(self, db_name):
@@ -247,7 +247,7 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(KeyError):
             insert_one_in_many_collections(db_name, collection, 'objects[0]', values[0])
-        os.remove(f'{name}.json')
+        os.remove(os.path.join(name + '.json'))
 
     @pytest.mark.parametrize('collection', (123, True, str, set, dict))
     def test_collection_non_list(self, collection):
@@ -259,7 +259,7 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(KeyError):
             insert_one_in_many_collections(db_name, collection, 'objects[0]', values[0])
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('object', (123, True, list, set, dict))
     def test_object_non_str(self, object):
@@ -271,6 +271,6 @@ class TestInsertOneInManyCollections:
 
         with pytest.raises(KeyError):
             insert_one_in_many_collections(db_name, collection, object, values[0])
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name + '.json'))
 
 

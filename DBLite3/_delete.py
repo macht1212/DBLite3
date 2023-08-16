@@ -5,7 +5,8 @@ from DBLite3._funcs import _open_db, _save_db, _get_value_index
 def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
     """
     Objective:
-    The objective of the 'delete_value' function is to delete a value from a specific object in a collection of a given database, based on the provided id.
+    The objective of the 'delete_value' function is to delete a value from a specific object in a collection of a given
+    database, based on the provided id.
     
     Inputs:
         - db_name: a string representing the name of the database to delete the value from.
@@ -16,9 +17,11 @@ def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
     Flow:
         - The function calls the '_get_value_index' function to retrieve the index of the value to delete.
         - The function calls the '_open_db' function to open the database and retrieve its content.
-        - The function checks if the collection, object, and values exist in the database. If any of them do not exist, it raises a ValueError.
+        - The function checks if the collection, object, and values exist in the database. If any of them do not exist,
+          it raises a ValueError.
         - The function checks if the index of the value to delete is not None.
-        - If the index is not None, the function deletes the value from the list of values in the specified object of the specified collection in the specified database.
+        - If the index is not None, the function deletes the value from the list of values in the specified object of
+          the specified collection in the specified database.
         - If the list of values becomes empty, the function sets it to None.
         - The function calls the '_save_db' function to save the updated database.
         
@@ -28,7 +31,8 @@ def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
     Additional aspects:
         - The function raises a DeleteError if any error occurs during the deletion process.
         - The function assumes that the database, collection, object, and value with the provided names and id exist.
-        - The function does not handle any errors that may occur during the file operations or the search for the value index.
+        - The function does not handle any errors that may occur during the file operations or the search for the value
+          index.
     """
     try:
         index = _get_value_index(db_name=db_name, collection=collection, obj_name=obj_name, id=id)
@@ -55,7 +59,9 @@ def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
 def delete_all_values(db_name: str, collection: str, obj_name: str) -> None:
     """
     Objective:
-    The objective of the 'delete_all_values' function is to delete all values from a specific object in a specific collection of a given database. The function uses the '_open_db' and '_save_db' functions from the same module to open and save the modified database. The function now handles any errors that may occur during the file operations.
+    The objective of the 'delete_all_values' function is to delete all values from a specific object in a specific
+    collection of a given database. The function uses the '_open_db' and '_save_db' functions from the same module to
+    open and save the modified database. The function now handles any errors that may occur during the file operations.
 
     Inputs:
         - db_name: a string representing the name of the database to delete values from.

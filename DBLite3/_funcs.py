@@ -80,7 +80,8 @@ def _save_db(db_name: str, DB: dict) -> None:
 def _get_value_id(db_name: str, collection: str, obj_name: str, value: Any) -> int | None:
     """
     Objective:
-    The objective of the function is to retrieve the id of a given value from a specific object in a collection of a database.
+    The objective of the function is to retrieve the id of a given value from a specific object in a collection of a
+    database.
     
     Inputs:
         - db_name: a string representing the name of the database to search for the value id.
@@ -118,7 +119,8 @@ def _get_value_id(db_name: str, collection: str, obj_name: str, value: Any) -> i
 def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> int | None:
     """
     Objective:
-    The objective of the function is to return the index of a value in a specific object of a collection in a given database, based on the provided id.
+    The objective of the function is to return the index of a value in a specific object of a collection in a given
+    database, based on the provided id.
     
     Inputs:
         - db_name: a string representing the name of the database to search for the value index.
@@ -128,20 +130,24 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
     
     Flow:
         - The function calls the _open_db() function to open the database and retrieve its content.
-        - The function checks the type of 'db_name', 'collection', 'object', and 'id'. If they are not of the expected types, it raises a ValueError.
-        - The function checks if the 'collection', 'object', and 'values' exist in the database. If any of them do not exist, it raises a ValueError.
+        - The function checks the type of 'db_name', 'collection', 'object', and 'id'. If they are not of the expected
+          types, it raises a ValueError.
+        - The function checks if the 'collection', 'object', and 'values' exist in the database. If any of them do not
+          exist, it raises a ValueError.
         - The function iterates over the values of the specified object in the specified collection.
         - For each value, the function checks if its id matches the provided id.
         - If a match is found, the function returns the index of the value.
         - If no match is found, the function returns None.
     
     Outputs:
-        - An integer representing the index of the value in the specified object of the specified collection in the specified database, based on the provided id.
+        - An integer representing the index of the value in the specified object of the specified collection in the
+          specified database, based on the provided id.
         - None if no value with the provided id is found.
     
     Additional aspects:
         - The function assumes that the database, collection, object, and value with the provided names and id exist.
-        - The function does not handle any errors that may occur during the file operations or the search for the value index.
+        - The function does not handle any errors that may occur during the file operations or the search for the value
+          index.
     """
     if not isinstance(db_name, str) or not isinstance(collection, str) or not isinstance(obj_name, str):
         raise ValueError('db_name, collection, and object must be strings')
@@ -161,13 +167,15 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
 def _db_exists(db_name: str) -> bool:
     """
     Objective:
-    The objective of the function is to check if a database with a given name exists in the base directory. It returns a boolean value indicating whether the database exists or not.
+    The objective of the function is to check if a database with a given name exists in the base directory. It returns a
+    boolean value indicating whether the database exists or not.
     
     Inputs:
         - db_name (str): the name of the database whose existence is to be checked.
     
     Flow:
-        - The function first checks if a file with the name '{db_name}.json' exists in the base directory using the os.path.isfile() method.
+        - The function first checks if a file with the name '{db_name}.json' exists in the base directory using the
+          os.path.isfile() method.
         - If the file exists, the function returns True indicating that the database exists.
         - If the file does not exist, the function returns False indicating that the database does not exist.
     
@@ -177,7 +185,8 @@ def _db_exists(db_name: str) -> bool:
     Additional aspects:
         - The function uses the os module to check if the file exists in the base directory.
         - The function assumes that the database is stored in a JSON file with the same name as the database name.
-        - The function uses os.path.join to construct the file path instead of string concatenation to ensure compatibility across different operating systems.
+        - The function uses os.path.join to construct the file path instead of string concatenation to ensure
+          compatibility across different operating systems.
         - The function validates that db_name is a non-empty string before proceeding.
     """
     if not isinstance(db_name, str) or not db_name:
@@ -190,7 +199,8 @@ def _db_exists(db_name: str) -> bool:
 def _collection_exists(collection: str, DB: dict) -> bool:
     """
     Objective:
-    The objective of the function is to check if a given collection exists in a parsed database and return a boolean value indicating its existence.
+    The objective of the function is to check if a given collection exists in a parsed database and return a boolean
+    value indicating its existence.
 
     Inputs:
         - collection: a string representing the name of the collection to be checked
@@ -216,7 +226,8 @@ def _collection_exists(collection: str, DB: dict) -> bool:
 def _object_exists(collection: str, obj_name: str, DB: dict) -> bool:
     """
     Objective:
-    The main objective of the function is to check if a given object exists in a specified collection of a parsed database and return a boolean value indicating the existence of the object.
+    The main objective of the function is to check if a given object exists in a specified collection of a parsed
+    database and return a boolean value indicating the existence of the object.
 
     Inputs:
         - collection: a string representing the name of the collection to be checked
@@ -225,15 +236,18 @@ def _object_exists(collection: str, obj_name: str, DB: dict) -> bool:
 
     Flow:
         - The function takes in the collection, object, and DB as inputs
-        - It checks if the object exists in the specified collection of the database by using the 'in' operator to check if the object is a key in the collection
+        - It checks if the object exists in the specified collection of the database by using the 'in' operator to check
+          if the object is a key in the collection
         - If the object exists, the function returns True, otherwise, it returns False
 
     Outputs:
         - bool: a boolean value indicating the existence of the object in the specified collection of the database
 
     Additional aspects:
-        - The function is designed to work with a parsed database, which means that the database has already been processed and converted into a dictionary format
-        - The function only checks for the existence of an object in a single collection, and not across multiple collections in the database.
+        - The function is designed to work with a parsed database, which means that the database has already been
+          processed and converted into a dictionary format
+        - The function only checks for the existence of an object in a single collection, and not across multiple
+          collections in the database.
     """
     if obj_name in DB[collection].keys():
         return True
@@ -279,7 +293,9 @@ def _is_value_exists(DB: dict, collection: str, obj_name: str, value: Any) -> bo
 def _count(DATABASE: dict, collection: str, obj_name: str) -> int:
     """
     Objective:
-    The objective of the function is to count the number of entries in a given collection in a database dictionary. If the first entry in the collection exists, the function returns the value of the first element in the last entry of the 'values' key of the object in the collection. Otherwise, the function returns 0.
+    The objective of the function is to count the number of entries in a given collection in a database dictionary.
+    If the first entry in the collection exists, the function returns the value of the first element in the last entry
+    of the 'values' key of the object in the collection. Otherwise, the function returns 0.
 
     Inputs:
         - DATABASE: a dictionary containing the database
@@ -288,7 +304,8 @@ def _count(DATABASE: dict, collection: str, obj_name: str) -> int:
 
     Flow:
         - Check if the first entry in the collection exists by calling the _is_value_in function
-        - If the first entry exists, return the value of the first element in the last entry of the 'values' key of the object in the collection
+        - If the first entry exists, return the value of the first element in the last entry of the 'values' key of the
+          object in the collection
         - If the first entry does not exist, return 0
 
     Outputs:

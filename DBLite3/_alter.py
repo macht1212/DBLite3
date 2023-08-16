@@ -17,7 +17,8 @@ def alter_object(db_name: str, collection: str, obj_name_old: str, object_name_n
     
     Flow:
         - Open the database using the _open_db function.
-        - Modify the name of the object in the collection by creating a new key-value pair with the new name and the value of the old name, and then deleting the old key-value pair.
+        - Modify the name of the object in the collection by creating a new key-value pair with the new name and the
+          value of the old name, and then deleting the old key-value pair.
         - Save the modified database using the _save_db function.
 
     Outputs:
@@ -46,7 +47,8 @@ def alter_object(db_name: str, collection: str, obj_name_old: str, object_name_n
 def alter_collection(db_name: str, collection_new: str, collection_old: str) -> None:
     """
     Objective:
-    The objective of the function is to modify the name of a collection in a given database by changing the key of the collection in the dictionary object representing the database and saving the modified database back to the file.
+    The objective of the function is to modify the name of a collection in a given database by changing the key of the
+    collection in the dictionary object representing the database and saving the modified database back to the file.
     
     Inputs:
         - db_name: a string representing the name of the database to be modified.
@@ -55,7 +57,8 @@ def alter_collection(db_name: str, collection_new: str, collection_old: str) -> 
     
     Flow:
         - Open the database file with the given name using the _open_db function.
-        - Modify the key of the collection in the dictionary object representing the database by adding a new key with the new name and deleting the old key.
+        - Modify the key of the collection in the dictionary object representing the database by adding a new key with
+          the new name and deleting the old key.
         - Save the modified database back to the file using the _save_db function.
     
     Outputs:
@@ -84,7 +87,8 @@ def alter_collection(db_name: str, collection_new: str, collection_old: str) -> 
 def alter_db(db_name_old: str, db_name_new: str) -> None:
     """
     Objective:
-    The objective of the 'alter_db' function is to modify the name of a database by renaming the file that contains the data of the database.
+    The objective of the 'alter_db' function is to modify the name of a database by renaming the file that contains the
+    data of the database.
 
     Inputs:
         - db_name_old: a string representing the old name of the database to be modified.
@@ -92,8 +96,10 @@ def alter_db(db_name_old: str, db_name_new: str) -> None:
 
     Flow:
         - The function uses the 'os.rename' method to rename the file that contains the data of the database.
-        - The 'src' parameter of the 'os.rename' method is set to the old name of the database with the '.json' extension.
-        - The 'dst' parameter of the 'os.rename' method is set to the new name of the database with the '.json' extension.
+        - The 'src' parameter of the 'os.rename' method is set to the old name of the database with the '.json'
+          extension.
+        - The 'dst' parameter of the 'os.rename' method is set to the new name of the database with the '.json'
+          extension.
 
     Outputs:
         - None

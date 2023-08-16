@@ -7,7 +7,10 @@ from DBLite3._exceptions import InsertError, OpenError, SaveError
 def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, value: Any) -> None:
     """
     Objective:
-    The objective of the 'insert_one_in_one' function is to add a single value to a collection in a database. The function creates a new list for the value, with a serial number calculated relative to the last serial number of the value. The function assumes that the database, collection, and object already exist and does not handle any errors that may occur during the database operations.
+    The objective of the 'insert_one_in_one' function is to add a single value to a collection in a database. The
+    function creates a new list for the value, with a serial number calculated relative to the last serial number of the
+    value. The function assumes that the database, collection, and object already exist and does not handle any errors
+    that may occur during the database operations.
 
     Inputs:
         - db_name: a string representing the name of the database to add the value to
@@ -19,7 +22,8 @@ def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, v
         - Open the database using the '_open_db' function
         - Check if the first entry in the collection exists using the '_is_value_in' function
         - If the first entry does not exist, create a new list for the value with a serial number of 1
-        - If the first entry exists, calculate the serial number of the new value relative to the last serial number of the value and add it to the list
+        - If the first entry exists, calculate the serial number of the new value relative to the last serial number of
+          the value and add it to the list
         - Save the updated database using the '_save_db' function
 
     Outputs:
@@ -67,7 +71,9 @@ def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, v
 def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, values: list) -> None:
     """
     Objective:
-    The objective of the function is to add multiple values to a collection in a given database. The values are added to a separate list within the collection, with each value having its own serial number relative to the last serial number of the value.
+    The objective of the function is to add multiple values to a collection in a given database. The values are added to
+     a separate list within the collection, with each value having its own serial number relative to the last serial
+     number of the value.
 
     Inputs:
         - db_name: a string representing the name of the database to add values to
@@ -81,8 +87,10 @@ def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, 
         - If the collection has values, set the count variable to the last serial number of the value
         - If the collection does not have values, set the count variable to 0
         - Check if the first entry in the collection exists using the _is_value_in function
-        - If the first entry does not exist, append each value to the 'values' list with a serial number calculated relative to the last serial number of the value
-        - If the first entry exists, append each value to the 'values' list with a serial number calculated relative to the last serial number of the value + 1
+        - If the first entry does not exist, append each value to the 'values' list with a serial number calculated
+          relative to the last serial number of the value
+        - If the first entry exists, append each value to the 'values' list with a serial number calculated relative to
+          the last serial number of the value + 1
         - Save the updated database using the _save_db function
 
     Outputs:
@@ -134,7 +142,9 @@ def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, 
 def insert_one_in_many_collections(db_name: str, collections: list, obj_name: str, value: Any) -> None:
     """
     Objective:
-    The objective of the 'insert_one_in_many_collections' function is to insert a single value into multiple collections and objects in a database. The function takes in the name of the database, a list of collection names, an object name, and a value to be inserted.
+    The objective of the 'insert_one_in_many_collections' function is to insert a single value into multiple collections
+     and objects in a database. The function takes in the name of the database, a list of collection names, an object
+     name, and a value to be inserted.
 
     Inputs:
         - db_name: a string representing the name of the database to insert the value into
@@ -147,7 +157,8 @@ def insert_one_in_many_collections(db_name: str, collections: list, obj_name: st
         - For each collection in the list of collections:
             - Check if the collection and object exist in the database
             - Get the count of entries in the collection using the '_count' function
-            - If the first entry in the collection exists, append the value to the 'values' key of the object in the collection with a new count value
+            - If the first entry in the collection exists, append the value to the 'values' key of the object in the
+              collection with a new count value
         - Save the updated database using the '_save_db' function
 
     Outputs:
@@ -169,8 +180,7 @@ def insert_one_in_many_collections(db_name: str, collections: list, obj_name: st
     try:
         DATABASE = _open_db(db_name=db_name)
     except OpenError as e:
-        print(f'Error: {e}')
-        return
+        raise OpenError(f'Error: {e}')
 
     for collection in collections:
 

@@ -7,7 +7,8 @@ from DBLite3._funcs import _open_db, _save_db, _get_value_index
 def update_value_by_id(db_name: str, collection: str, obj_name: str, id: int, value: Any) -> None:
     """
     Objective:
-    The objective of the function is to update a single value in a specific object of a collection in a given database, based on the provided id.
+    The objective of the function is to update a single value in a specific object of a collection in a given database,
+    based on the provided id.
     
     Inputs:
         - db_name: a string representing the name of the database to be modified.
@@ -27,7 +28,8 @@ def update_value_by_id(db_name: str, collection: str, obj_name: str, id: int, va
     
     Additional aspects:
         - The function assumes that the database, collection, object, and value with the provided names and id exist.
-        - The function does not handle any errors that may occur during the file operations or the search for the value index.
+        - The function does not handle any errors that may occur during the file operations or the search for the value
+          index.
     """
     try:
         DATABASE = _open_db(db_name=db_name)
@@ -57,7 +59,8 @@ def update_value_by_id(db_name: str, collection: str, obj_name: str, id: int, va
 def update_values_by_id(db_name: str, collection: str, obj_name: str, id: list, values: list) -> None:
     """
     Objective:
-    The objective of the function is to update multiple values in a specific object of a collection in a given database, based on the provided identifiers.
+    The objective of the function is to update multiple values in a specific object of a collection in a given database,
+    based on the provided identifiers.
 
     Inputs:
         - db_name: a string representing the name of the database to be modified.
@@ -69,15 +72,18 @@ def update_values_by_id(db_name: str, collection: str, obj_name: str, id: list, 
     Flow:
         - The function calls the _open_db() function to open the database and retrieve its content.
         - The function iterates over the provided list of identifiers.
-        - For each identifier, the function calls the _get_value_index() function to retrieve the index of the value in the specified object of the specified collection in the specified database, based on the provided identifier.
-        - The function updates the value at the retrieved index with the corresponding value from the provided list of new values.
+        - For each identifier, the function calls the _get_value_index() function to retrieve the index of the value in
+          the specified object of the specified collection in the specified database, based on the provided identifier.
+        - The function updates the value at the retrieved index with the corresponding value from the provided list of
+          new values.
         - The function calls the _save_db() function to save the modified database.
 
     Outputs:
         - None
 
     Additional aspects:
-        - The function assumes that the database, collection, object, and values with the provided names and identifiers exist.
+        - The function assumes that the database, collection, object, and values with the provided names and identifiers
+          exist.
         - The function does not handle any errors that may occur during the file operations or the update of the values.
     """
     if len(id) != len(values):
