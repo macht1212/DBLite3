@@ -5,32 +5,24 @@ import pytest
 from DBLite3 import create_db, create_collection, create_object
 from DBLite3 import CreationError
 from DBLite3._funcs import _open_db
+from tests._test import word_generator
 
 
 class TestCreateDB:
-    @pytest.mark.parametrize('db_name',
-                             ('first',
-                              'second',
-                              'third'))
+    @pytest.mark.parametrize('db_name', (word_generator(5) for _ in range(50)))
     def test_create_db_is_ex_false_no_ex(self, db_name):
         create_db(db_name)
         assert os.path.isfile(f'{db_name}.json')
         os.remove(f'{db_name}.json')
 
-    @pytest.mark.parametrize('db_name',
-                             ('first',
-                              'second',
-                              'third'))
+    @pytest.mark.parametrize('db_name', (word_generator(5) for _ in range(50)))
     def test_create_db_is_ex_false_is_ex(self, db_name):
         create_db(db_name)
         with pytest.raises(CreationError):
             create_db(db_name)
         os.remove(f'{db_name}.json')
 
-    @pytest.mark.parametrize('db_name',
-                             ('first',
-                              'second',
-                              'third'))
+    @pytest.mark.parametrize('db_name', (word_generator(5) for _ in range(50)))
     def test_create_db_is_ex_true_is_ex(self, db_name):
         create_db(db_name)
         create_db(db_name, if_exists=True)
@@ -42,16 +34,17 @@ class TestCreateDB:
         with pytest.raises(ValueError):
             create_db(db_name)
 
-    def test_create_db_non_str_name(self):
-        db_name = 123
+    @pytest.mark.parametrize('db_name', (i for i in range(50)))
+    def test_create_db_non_str_name(self, db_name):
         with pytest.raises(ValueError):
             create_db(db_name)
 
 
 class TestCreateCollection:
 
-    def test_create_collection_positive_case(self):
-        db_name, collection, objects = 'test', 'collection', ['o1', 'o2']
+    @pytest.mark.parametrize('collection', (word_generator(5) for _ in range(50)))
+    def test_create_collection_positive_case(self, collection):
+        db_name, objects = 'test', ['o1', 'o2']
         create_db(db_name)
         create_collection(db_name, collection, objects)
         DB = _open_db(db_name)
@@ -98,7 +91,7 @@ class TestCreateCollection:
 
 class TestCreateObject:
 
-    @pytest.mark.parametrize('object', ('123', '23', 'True', 'list()', 'set()', 'dict()'))
+    @pytest.mark.parametrize('object', (word_generator(5) for _ in range(50)))
     def test_create_object_positive_case(self, object):
         db_name, collection, objects = 'test', 'collection', ['o1', 'o2']
         create_db(db_name)

@@ -5,17 +5,18 @@ import pytest
 from DBLite3 import (insert_one_in_many_collections,
                      insert_many_in_one_collection,
                      insert_one_in_one_collection,
-                     create_db, create_collection, OpenError)
+                     create_db, create_collection)
 from DBLite3._funcs import _open_db
+from tests._test import word_generator
 
 
 class TestInsertOneInOneCollection:
 
-    def test_insert_value_to_empty_object(self):
+    @pytest.mark.parametrize('value', (word_generator(5) for _ in range(50)))
+    def test_insert_value_to_empty_object(self, value):
         db_name = 'test'
         collection = 'col'
         objects = ['obj']
-        value = 'value'
         create_db(db_name)
         create_collection(db_name, collection, objects)
         insert_one_in_one_collection(db_name, collection, objects[0], value)
@@ -23,10 +24,10 @@ class TestInsertOneInOneCollection:
         assert DB[collection][objects[0]]['values'] == [[1, value]]
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_value_to_non_empty_object(self):
+    @pytest.mark.parametrize('value2', (word_generator(5) for _ in range(50)))
+    def test_insert_value_to_non_empty_object(self, value2):
         db_name, collection, objects = 'test', 'col', ['obj']
         value1 = 'value'
-        value2 = 'new'
         create_db(db_name)
         create_collection(db_name, collection, objects)
         insert_one_in_one_collection(db_name, collection, objects[0], value1)
@@ -43,10 +44,10 @@ class TestInsertOneInOneCollection:
         with pytest.raises(FileNotFoundError):
             insert_one_in_one_collection(db_name=db_name, collection=collection, obj_name=object, value=value)
 
-    def test_collection_does_not_exist(self):
+    @pytest.mark.parametrize('collection1', (word_generator(5) for _ in range(50)))
+    def test_collection_does_not_exist(self, collection1):
         db_name = 'test_db'
         collection = 'coll'
-        collection1 = 'non_existent_collection'
         object = ['test_object']
         value = 'test_value'
         create_db(db_name)
@@ -55,11 +56,11 @@ class TestInsertOneInOneCollection:
             insert_one_in_one_collection(db_name=db_name, collection=collection1, obj_name=object[0], value=value)
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_object_does_not_exist(self):
+    @pytest.mark.parametrize('object', (word_generator(5) for _ in range(50)))
+    def test_object_does_not_exist(self, object):
         db_name = 'test_db'
         collection = 'test_collection'
         obj = ['o']
-        object = 'non_existent_object'
         value = 'test_value'
         create_db(db_name)
         create_collection(db_name, collection, obj)
@@ -85,7 +86,8 @@ class TestInsertOneInOneCollection:
 
 class TestInsertManyInOneCollection:
 
-    def test_insert_positive_case_to_empty_obj(self):
+    @pytest.mark.parametrize('values', ([word_generator(5), word_generator(4)] for _ in range(50)))
+    def test_insert_positive_case_to_empty_obj(self, values):
         db_name, collection, objects = 'test', 'col', ['obj']
         values = ['value1', 'value2']
         create_db(db_name)
@@ -95,10 +97,10 @@ class TestInsertManyInOneCollection:
         assert DB[collection][objects[0]]['values'] == [[1, values[0]], [2, values[1]]]
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_positive_case_to_non_empty_obj(self):
+    @pytest.mark.parametrize('values', ([word_generator(5), word_generator(6)] for _ in range(50)))
+    def test_insert_positive_case_to_non_empty_obj(self, values):
         db_name, collection, objects = 'test', 'col', ['obj']
         value = 'value0'
-        values = ['value', 'value2']
         create_db(db_name)
         create_collection(db_name, collection, objects)
         insert_one_in_one_collection(db_name, collection, objects[0], value)
@@ -107,31 +109,34 @@ class TestInsertManyInOneCollection:
         assert DB[collection][objects[0]]['values'] == [[1, value], [2, values[0]], [3, values[1]]]
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_db(self):
+    @pytest.mark.parametrize('db_name_non_ex', (word_generator(5) for _ in range(50)))
+    def test_insert_non_exist_db(self, db_name_non_ex):
         db_name, collection, objects = 'test', 'col', ['obj']
         values = ['value', 'value2']
         create_db(db_name)
         create_collection(db_name, collection, objects)
         with pytest.raises(FileNotFoundError):
-            insert_many_in_one_collection('no_exist', collection, objects[0], values)
+            insert_many_in_one_collection(db_name_non_ex, collection, objects[0], values)
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_collection(self):
+    @pytest.mark.parametrize('col', (word_generator(5) for _ in range(50)))
+    def test_insert_non_exist_collection(self, col):
         db_name, collection, objects = 'test', 'col', ['obj']
         values = ['value', 'value2']
         create_db(db_name)
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
-            insert_many_in_one_collection(db_name, 'collection', objects[0], values)
+            insert_many_in_one_collection(db_name, col, objects[0], values)
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_object(self):
+    @pytest.mark.parametrize('obj', (word_generator(5) for _ in range(50)))
+    def test_insert_non_exist_object(self, obj):
         db_name, collection, objects = 'test', 'col', ['obj']
         values = ['value', 'value2']
         create_db(db_name)
         create_collection(db_name, collection, objects)
         with pytest.raises(KeyError):
-            insert_many_in_one_collection(db_name, collection, 'objects[0]', values)
+            insert_many_in_one_collection(db_name, collection, obj, values)
         os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('db_name', (123, True, list, set, dict))
@@ -176,9 +181,9 @@ class TestInsertManyInOneCollection:
 
 class TestInsertOneInManyCollections:
 
-    def test_insert_positive_case_to_empty_obj(self):
+    @pytest.mark.parametrize('values', ([word_generator(5), word_generator(4)] for _ in range(50)))
+    def test_insert_positive_case_to_empty_obj(self, values):
         db_name, collection, objects = 'test', ['col1', 'col2'], ['obj1', 'obj2']
-        values = ['value1', 'value2']
         create_db(db_name)
         create_collection(db_name, collection[0], objects)
         create_collection(db_name, collection[1], objects)
@@ -188,9 +193,9 @@ class TestInsertOneInManyCollections:
             assert DB[col][objects[0]]['values'] == [[1, values[0]]]
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_positive_case_to_non_empty_obj(self):
+    @pytest.mark.parametrize('values', ([word_generator(5), word_generator(7)] for _ in range(50)))
+    def test_insert_positive_case_to_non_empty_obj(self, values):
         db_name, collection, objects = 'test', ['col1', 'col2'], ['obj1', 'obj2']
-        values = ['value1', 'value2']
         create_db(db_name)
         create_collection(db_name, collection[0], objects)
         create_collection(db_name, collection[1], objects)
@@ -204,7 +209,8 @@ class TestInsertOneInManyCollections:
             assert DB[col][objects[0]]['values'] == [[1, values[0]], [2, values[1]]]
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_db(self):
+    @pytest.mark.parametrize('db', (word_generator(5) for _ in range(50)))
+    def test_insert_non_exist_db(self, db):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
         values = ['value', 'value2']
         create_db(db_name)
@@ -212,10 +218,11 @@ class TestInsertOneInManyCollections:
             create_collection(db_name, col, objects)
 
         with pytest.raises(FileNotFoundError):
-            insert_one_in_many_collections('no_exist', collection, objects[0], values[0])
+            insert_one_in_many_collections(db, collection, objects[0], values[0])
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_collection(self):
+    @pytest.mark.parametrize('col', (['col', word_generator(5)] for _ in range(50)))
+    def test_insert_non_exist_collection(self, col):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
         values = ['value', 'value2']
         create_db(db_name)
@@ -223,10 +230,11 @@ class TestInsertOneInManyCollections:
             create_collection(db_name, col, objects)
 
         with pytest.raises(KeyError):
-            insert_one_in_many_collections(db_name, ['col', 'dw'], objects[0], values[0])
+            insert_one_in_many_collections(db_name, col, objects[0], values[0])
         os.remove(os.path.join(db_name + '.json'))
 
-    def test_insert_non_exist_object(self):
+    @pytest.mark.parametrize('obj', (word_generator(5) for _ in range(50)))
+    def test_insert_non_exist_object(self, obj):
         db_name, collection, objects = 'test', ['col', 'ss'], ['obj']
         values = ['value', 'value2']
         create_db(db_name)
@@ -234,7 +242,7 @@ class TestInsertOneInManyCollections:
             create_collection(db_name, col, objects)
 
         with pytest.raises(KeyError):
-            insert_one_in_many_collections(db_name, collection, 'objects[0]', values[0])
+            insert_one_in_many_collections(db_name, collection, obj, values[0])
         os.remove(os.path.join(db_name + '.json'))
 
     @pytest.mark.parametrize('db_name', (123, True, list, set, dict))

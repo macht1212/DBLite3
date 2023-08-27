@@ -1,4 +1,4 @@
-from DBLite3 import DeleteError
+from DBLite3 import DeleteError, OpenError, SaveError
 from DBLite3._funcs import _open_db, _save_db, _get_value_index
 
 
@@ -34,24 +34,37 @@ def delete_value(db_name: str, collection: str, obj_name: str, id: int) -> None:
         - The function does not handle any errors that may occur during the file operations or the search for the value
           index.
     """
+    if not isinstance(db_name, str):
+        raise ValueError('Database name must be a string!')
+    if not isinstance(collection, str):
+        raise ValueError('Collection name must be a string!')
+    if not isinstance(obj_name, str):
+        raise ValueError('Object name must be a string!')
+    if not isinstance(id, int):
+        raise ValueError('Id must be an integer!')
+
+    try:
+        DATABASE = _open_db(db_name=db_name)
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
+    if collection not in DATABASE or obj_name not in DATABASE[collection]:
+        raise ValueError('Invalid collection or object')
+
+    if 'values' not in DATABASE[collection][obj_name]:
+        raise ValueError('No values found in object')
     try:
         index = _get_value_index(db_name=db_name, collection=collection, obj_name=obj_name, id=id)
-        DATABASE = _open_db(db_name=db_name)
-        
-        if collection not in DATABASE or obj_name not in DATABASE[collection]:
-            raise ValueError('Invalid collection or object')
-        
-        if 'values' not in DATABASE[collection][obj_name]:
-            raise ValueError('No values found in object')
-        
-        if index is not None:
-            if len(DATABASE[collection][obj_name]['values']) == 1:
-                DATABASE[collection][obj_name]['values'] = None
-            else:
-                del DATABASE[collection][obj_name]['values'][index]
-        
+    except ValueError as e:
+        raise ValueError(f'Error: {e}')
+
+    if index is not None:
+        if len(DATABASE[collection][obj_name]['values']) == 1:
+            DATABASE[collection][obj_name]['values'] = None
+        else:
+            del DATABASE[collection][obj_name]['values'][index]
+    try:
         _save_db(db_name=db_name, DB=DATABASE)
-    
     except Exception as e:
         raise DeleteError(f'Error deleting value: {e}')
 
@@ -82,11 +95,23 @@ def delete_all_values(db_name: str, collection: str, obj_name: str) -> None:
         - The function handles errors that may occur during the file operations.
         - The function modifies the database in place and does not return a new database object.
     """
-    DATABASE = _open_db(db_name=db_name)
-    
+    if not isinstance(db_name, str):
+        raise ValueError('Database name must be a string!')
+    if not isinstance(collection, str):
+        raise ValueError('Collection name must be a string!')
+    if not isinstance(obj_name, str):
+        raise ValueError('Object name must be a string!')
+    try:
+        DATABASE = _open_db(db_name=db_name)
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f'Error: {e}')
+
     if collection in DATABASE and obj_name in DATABASE[collection]:
-        try:
-            DATABASE[collection][obj_name]['values'] = None
-            _save_db(db_name=db_name, DB=DATABASE)
-        except Exception as e:
-            raise DeleteError(f'Error deleting values: {e}')
+        DATABASE[collection][obj_name]['values'] = None
+    else:
+        raise KeyError("Collection or object not in Database")
+
+    try:
+        _save_db(db_name=db_name, DB=DATABASE)
+    except SaveError as e:
+        raise SaveError(f'Error: {e}')

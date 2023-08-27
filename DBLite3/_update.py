@@ -86,11 +86,17 @@ def update_values_by_id(db_name: str, collection: str, obj_name: str, id: list, 
           exist.
         - The function does not handle any errors that may occur during the file operations or the update of the values.
     """
+    if (not isinstance(collection, str) or not isinstance(obj_name, str) or not isinstance(id, list)
+            or not isinstance(values, list)):
+        raise ValueError('collection, object, and id must be str and int, respectively')
     if len(id) != len(values):
         raise ValueError('id and values lists must have the same length')
 
-    DATABASE = _open_db(db_name=db_name)
-    
+    try:
+        DATABASE = _open_db(db_name=db_name)
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
     if collection not in DATABASE or obj_name not in DATABASE[collection]:
         raise ValueError('Invalid collection or object')
     

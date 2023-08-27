@@ -1,6 +1,6 @@
 import os
 
-from DBLite3._exceptions import DropError
+from DBLite3._exceptions import DropError, OpenError
 from DBLite3._funcs import _open_db, _save_db, _db_exists, _collection_exists, _object_exists
 
 
@@ -27,8 +27,11 @@ def drop_db(db_name: str) -> None:
           compatibility across different operating systems.
         - The function raises a ValueError if db_name is not a non-empty string.
     """
+    if not isinstance(db_name, str):
+        raise ValueError('DB name must be a string!')
+
     if _db_exists(db_name=db_name):
-        os.remove(f'{db_name}.json')
+        os.remove(os.path.join(db_name+'.json'))
         return
     else:
         raise DropError(f'Database {db_name} does not exist.')
@@ -64,10 +67,16 @@ def drop_collection(db_name: str, collection: str) -> None:
         - The function raises custom exceptions 'ValueError' and 'DropError' if the input parameters are invalid or the
           collection does not exist in the database, respectively
     """
-    if not db_name or not collection:
-        raise ValueError('db_name and collection must be non-empty strings')
-    
-    DATABASE = _open_db(db_name=db_name)
+    if not isinstance(db_name, str):
+        raise ValueError('Database must be a string!')
+    if not isinstance(collection, str):
+        raise ValueError('Collection must be a string!')
+
+    try:
+        DATABASE = _open_db(db_name=db_name)
+    except OpenError as e:
+        raise OpenError(f'Error: {e}')
+
     if _collection_exists(collection=collection, DB=DATABASE):
         del (DATABASE[collection])
         _save_db(db_name=db_name, DB=DATABASE)
@@ -107,20 +116,26 @@ def drop_object(db_name: str, collection: str, obj_name: str) -> None:
         - The function only deletes objects from a single collection and does not work across multiple collections in
           the database.
     """
-    try:
-        if not isinstance(db_name, str) or not db_name:
-            raise ValueError('db_name must be a non-empty string')
-        if not isinstance(collection, str) or not collection:
-            raise ValueError('collection must be a non-empty string')
-        if not isinstance(obj_name, str) or not obj_name:
-            raise ValueError('object must be a non-empty string')
+    if not isinstance(db_name, str) or not db_name:
+        raise ValueError('db_name must be a non-empty string')
+    if not isinstance(collection, str) or not collection:
+        raise ValueError('collection must be a non-empty string')
+    if not isinstance(obj_name, str) or not obj_name:
+        raise ValueError('object must be a non-empty string')
 
+    try:
         DATABASE = _open_db(db_name=db_name)
-        if _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
-            del (DATABASE[collection][obj_name])
-            _save_db(db_name=db_name, DB=DATABASE)
-            return
-        else:
-            raise DropError(f'Object {obj_name} does not exist.')
-    except Exception as e:
-        raise DropError(f'Error dropping object: {e}')
+    except DropError as e:
+        raise DropError(f'Error: {e}')
+
+    if not _db_exists(db_name=db_name):
+        raise DropError('Database does not exist!')
+    if not _collection_exists(collection=collection, DB=DATABASE):
+        raise DropError('Collection does not exist!')
+
+    if _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
+        del (DATABASE[collection][obj_name])
+        _save_db(db_name=db_name, DB=DATABASE)
+        return
+    else:
+        raise DropError(f'Object {obj_name} does not exist.')
