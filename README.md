@@ -1,7 +1,7 @@
 
 # ![Icon](img/icon.svg) DBLite3
 
-![Static Badge](https://img.shields.io/badge/LiteDB-v0.1.4-blue)
+![Static Badge](https://img.shields.io/badge/LiteDB-v0.2.0-blue)
 
 
 DBLite3 is NoSQL database.

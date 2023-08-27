@@ -15,7 +15,7 @@ from DBLite3._funcs import *
 # All information is stored in tables which contain collections.
 
 
-__version__ = '0.1.4.3'
+__version__ = '0.2.0'
 __author__ = "Alexander Nazimov"
 __git__ = '@macht1212'
 __email__ = 'nasimov.alexander@gmail.com'
