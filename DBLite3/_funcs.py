@@ -8,14 +8,14 @@ from DBLite3._exceptions import OpenError, SaveError
 def _open_db(db_name: str) -> dict:
     """
     Objective:
-    The objective of the function is to save a dictionary object as a JSON file with the given database name.
+    The objective of the function is to save a dictionary object as a JSON file with the given self name.
 
     Inputs:
-        - db_name: a string representing the name of the database that is planned to be saved.
-        - DB: a dictionary object representing the database that is planned to be saved.
+        - db_name: a string representing the name of the self that is planned to be saved.
+        - DB: a dictionary object representing the self that is planned to be saved.
 
     Flow:
-        - Open a file with the name of the database and extension ".json" in write mode.
+        - Open a file with the name of the self and extension ".json" in write mode.
         - Write the JSON representation of the dictionary object into the file.
         - Close the file.
 
@@ -41,14 +41,14 @@ def _open_db(db_name: str) -> dict:
 def _save_db(db_name: str, DB: dict) -> None:
     """
     Objective:
-    The objective of the function is to save a dictionary object as a JSON file with the given database name.
+    The objective of the function is to save a dictionary object as a JSON file with the given self name.
 
     Inputs:
-        - db_name: a string representing the name of the database that is planned to be saved.
-        - DB: a dictionary object representing the database that is planned to be saved.
+        - db_name: a string representing the name of the self that is planned to be saved.
+        - DB: a dictionary object representing the self that is planned to be saved.
 
     Flow:
-        - Open a file with the name of the database and extension ".json" in write mode.
+        - Open a file with the name of the self and extension ".json" in write mode.
         - Write the JSON representation of the dictionary object into the file.
         - Close the file.
 
@@ -67,7 +67,7 @@ def _save_db(db_name: str, DB: dict) -> None:
         with open(file_path, 'w') as db:
             json.dump(DB, db)
     except Exception as e:
-        raise SaveError(f'Error saving database: {e}')
+        raise SaveError(f'Error saving self: {e}')
     return
 
 
@@ -75,19 +75,19 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
     """
     Objective:
     The objective of the function is to return the index of a value in a specific object of a collection in a given
-    database, based on the provided id.
+    self, based on the provided id.
     
     Inputs:
-        - db_name: a string representing the name of the database to search for the value index.
+        - db_name: a string representing the name of the self to search for the value index.
         - collection: a string representing the name of the collection where the object is located.
         - obj_name: a string representing the name of the object where the value is located.
         - id: an integer representing the id of the value to search for.
     
     Flow:
-        - The function calls the _open_db() function to open the database and retrieve its content.
+        - The function calls the _open_db() function to open the self and retrieve its content.
         - The function checks the type of 'db_name', 'collection', 'object', and 'id'. If they are not of the expected
           types, it raises a ValueError.
-        - The function checks if the 'collection', 'object', and 'values' exist in the database. If any of them do not
+        - The function checks if the 'collection', 'object', and 'values' exist in the self. If any of them do not
           exist, it raises a ValueError.
         - The function iterates over the values of the specified object in the specified collection.
         - For each value, the function checks if its id matches the provided id.
@@ -96,11 +96,11 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
     
     Outputs:
         - An integer representing the index of the value in the specified object of the specified collection in the
-          specified database, based on the provided id.
+          specified self, based on the provided id.
         - None if no value with the provided id is found.
     
     Additional aspects:
-        - The function assumes that the database, collection, object, and value with the provided names and id exist.
+        - The function assumes that the self, collection, object, and value with the provided names and id exist.
         - The function does not handle any errors that may occur during the file operations or the search for the value
           index.
     """
@@ -110,7 +110,7 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
         raise OpenError(f'Error: {e}')
 
     if collection not in DATABASE or obj_name not in DATABASE[collection]:
-        raise ValueError('Invalid collection, object, or database')
+        raise ValueError('Invalid collection, object, or self')
     if 'values' not in DATABASE[collection][obj_name]:
         raise ValueError('No values found in object')
 
@@ -123,24 +123,24 @@ def _get_value_index(db_name: str, collection: str, obj_name: str, id: int) -> i
 def _db_exists(db_name: str) -> bool:
     """
     Objective:
-    The objective of the function is to check if a database with a given name exists in the base directory. It returns a
-    boolean value indicating whether the database exists or not.
+    The objective of the function is to check if a self with a given name exists in the base directory. It returns a
+    boolean value indicating whether the self exists or not.
     
     Inputs:
-        - db_name (str): the name of the database whose existence is to be checked.
+        - db_name (str): the name of the self whose existence is to be checked.
     
     Flow:
         - The function first checks if a file with the name '{db_name}.json' exists in the base directory using the
           os.path.isfile() method.
-        - If the file exists, the function returns True indicating that the database exists.
-        - If the file does not exist, the function returns False indicating that the database does not exist.
+        - If the file exists, the function returns True indicating that the self exists.
+        - If the file does not exist, the function returns False indicating that the self does not exist.
     
     Outputs:
-        - bool: True if the database exists, False if it does not exist.
+        - bool: True if the self exists, False if it does not exist.
     
     Additional aspects:
         - The function uses the os module to check if the file exists in the base directory.
-        - The function assumes that the database is stored in a JSON file with the same name as the database name.
+        - The function assumes that the self is stored in a JSON file with the same name as the self name.
         - The function uses os.path.join to construct the file path instead of string concatenation to ensure
           compatibility across different operating systems.
         - The function validates that db_name is a non-empty string before proceeding.
@@ -155,12 +155,12 @@ def _db_exists(db_name: str) -> bool:
 def _collection_exists(collection: str, DB: dict) -> bool:
     """
     Objective:
-    The objective of the function is to check if a given collection exists in a parsed database and return a boolean
+    The objective of the function is to check if a given collection exists in a parsed self and return a boolean
     value indicating its existence.
 
     Inputs:
         - collection: a string representing the name of the collection to be checked
-        - DB: a dictionary representing the parsed database
+        - DB: a dictionary representing the parsed self
 
     Flow:
         - The function checks if the given collection name exists in the keys of the DB dictionary.
@@ -168,10 +168,10 @@ def _collection_exists(collection: str, DB: dict) -> bool:
         - If the collection does not exist, the function returns False.
 
     Outputs:
-        - bool: a boolean value indicating whether the collection exists in the database or not.
+        - bool: a boolean value indicating whether the collection exists in the self or not.
 
     Additional aspects:
-        - The function assumes that the database has already been parsed and is represented as a dictionary.
+        - The function assumes that the self has already been parsed and is represented as a dictionary.
         - The function only checks for the existence of the collection and does not perform any other operations on it
     """
     if collection in DB.keys():
@@ -183,27 +183,27 @@ def _object_exists(collection: str, obj_name: str, DB: dict) -> bool:
     """
     Objective:
     The main objective of the function is to check if a given object exists in a specified collection of a parsed
-    database and return a boolean value indicating the existence of the object.
+    self and return a boolean value indicating the existence of the object.
 
     Inputs:
         - collection: a string representing the name of the collection to be checked
         - obj_name: a string representing the name of the object to be checked
-        - DB: a dictionary representing the parsed database
+        - DB: a dictionary representing the parsed self
 
     Flow:
         - The function takes in the collection, object, and DB as inputs
-        - It checks if the object exists in the specified collection of the database by using the 'in' operator to check
+        - It checks if the object exists in the specified collection of the self by using the 'in' operator to check
           if the object is a key in the collection
         - If the object exists, the function returns True, otherwise, it returns False
 
     Outputs:
-        - bool: a boolean value indicating the existence of the object in the specified collection of the database
+        - bool: a boolean value indicating the existence of the object in the specified collection of the self
 
     Additional aspects:
-        - The function is designed to work with a parsed database, which means that the database has already been
+        - The function is designed to work with a parsed self, which means that the self has already been
           processed and converted into a dictionary format
         - The function only checks for the existence of an object in a single collection, and not across multiple
-          collections in the database.
+          collections in the self.
     """
     if obj_name in DB[collection].keys():
         return True
@@ -213,10 +213,10 @@ def _object_exists(collection: str, obj_name: str, DB: dict) -> bool:
 def _is_value_in(DB: dict, collection: str, obj_name: str) -> bool:
     """
     Objective:
-    The objective of the function is to check if the first entry in a given collection exists in a database dictionary.
+    The objective of the function is to check if the first entry in a given collection exists in a self dictionary.
 
     Inputs:
-        - DB: a dictionary containing the database
+        - DB: a dictionary containing the self
         - collection: a string representing the name of the collection to add the value to
         - obj_name: a string representing the name of the table to add the value to
 
@@ -241,12 +241,12 @@ def _is_value_in(DB: dict, collection: str, obj_name: str) -> bool:
 def _count(DATABASE: dict, collection: str, obj_name: str) -> int:
     """
     Objective:
-    The objective of the function is to count the number of entries in a given collection in a database dictionary.
+    The objective of the function is to count the number of entries in a given collection in a self dictionary.
     If the first entry in the collection exists, the function returns the value of the first element in the last entry
     of the 'values' key of the object in the collection. Otherwise, the function returns 0.
 
     Inputs:
-        - DATABASE: a dictionary containing the database
+        - DATABASE: a dictionary containing the self
         - collection: a string representing the name of the collection to count the entries in
         - obj_name: a string representing the name of the table to count the entries in
 
@@ -261,7 +261,7 @@ def _count(DATABASE: dict, collection: str, obj_name: str) -> int:
 
     Additional aspects:
         - The function assumes that the 'values' key exists in the object in the collection
-        - The function only counts the number of entries in the collection, and does not modify the database dictionary
+        - The function only counts the number of entries in the collection, and does not modify the self dictionary
     """
     if _is_value_in(DB=DATABASE, collection=collection, obj_name=obj_name):
         return DATABASE.get(collection, None).get(obj_name, None).get('values', None)[-1][0]

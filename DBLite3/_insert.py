@@ -7,31 +7,31 @@ from DBLite3._exceptions import InsertError, OpenError, SaveError
 def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, value: Any) -> None:
     """
     Objective:
-    The objective of the 'insert_one_in_one' function is to add a single value to a collection in a database. The
+    The objective of the 'insert_one_in_one' function is to add a single value to a collection in a self. The
     function creates a new list for the value, with a serial number calculated relative to the last serial number of the
-    value. The function assumes that the database, collection, and object already exist and does not handle any errors
-    that may occur during the database operations.
+    value. The function assumes that the self, collection, and object already exist and does not handle any errors
+    that may occur during the self operations.
 
     Inputs:
-        - db_name: a string representing the name of the database to add the value to
+        - db_name: a string representing the name of the self to add the value to
         - collection: a string representing the name of the collection to add the value to
         - obj_name: a string representing the name of the object to add the value to
-        - value: any type of value to be added to the database
+        - value: any type of value to be added to the self
 
     Flow:
-        - Open the database using the '_open_db' function
+        - Open the self using the '_open_db' function
         - Check if the first entry in the collection exists using the '_is_value_in' function
         - If the first entry does not exist, create a new list for the value with a serial number of 1
         - If the first entry exists, calculate the serial number of the new value relative to the last serial number of
           the value and add it to the list
-        - Save the updated database using the '_save_db' function
+        - Save the updated self using the '_save_db' function
 
     Outputs:
         - None
 
     Additional aspects:
-        - The function assumes that the database, collection, and object already exist
-        - The function does not handle any errors that may occur during the database operations
+        - The function assumes that the self, collection, and object already exist
+        - The function does not handle any errors that may occur during the self operations
     """
 
     if not isinstance(db_name, str):
@@ -47,9 +47,9 @@ def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, v
         raise OpenError(f'Error: {e}')
 
     if collection not in DATABASE.keys():
-        raise KeyError(f'Collection {collection} not found in database')
+        raise KeyError(f'Collection {collection} not found in self')
     if obj_name not in DATABASE[collection].keys():
-        raise KeyError(f'Object {obj_name} not found in database')
+        raise KeyError(f'Object {obj_name} not found in self')
 
     count = _count(DATABASE=DATABASE, collection=collection, obj_name=obj_name)
 
@@ -71,18 +71,18 @@ def insert_one_in_one_collection(db_name: str, collection: str, obj_name: str, v
 def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, values: list) -> None:
     """
     Objective:
-    The objective of the function is to add multiple values to a collection in a given database. The values are added to
+    The objective of the function is to add multiple values to a collection in a given self. The values are added to
      a separate list within the collection, with each value having its own serial number relative to the last serial
      number of the value.
 
     Inputs:
-        - db_name: a string representing the name of the database to add values to
+        - db_name: a string representing the name of the self to add values to
         - collection: a string representing the name of the collection to add values to
         - obj_name: a string representing the name of the object to add values to
-        - values: a list of values to be added to the database
+        - values: a list of values to be added to the self
 
     Flow:
-        - Open the database using the _open_db function
+        - Open the self using the _open_db function
         - Check if the collection already has values by accessing the 'values' key of the object in the collection
         - If the collection has values, set the count variable to the last serial number of the value
         - If the collection does not have values, set the count variable to 0
@@ -91,7 +91,7 @@ def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, 
           relative to the last serial number of the value
         - If the first entry exists, append each value to the 'values' list with a serial number calculated relative to
           the last serial number of the value + 1
-        - Save the updated database using the _save_db function
+        - Save the updated self using the _save_db function
 
     Outputs:
         - None
@@ -117,7 +117,7 @@ def insert_many_in_one_collection(db_name: str, collection: str, obj_name: str, 
         return
 
     if collection not in DATABASE or obj_name not in DATABASE[collection]:
-        raise KeyError(f'Collection {collection} or object {obj_name} not found in database')
+        raise KeyError(f'Collection {collection} or object {obj_name} not found in self')
 
     count = _count(DATABASE=DATABASE, collection=collection, obj_name=obj_name)
 
@@ -143,32 +143,32 @@ def insert_one_in_many_collections(db_name: str, collections: list, obj_name: st
     """
     Objective:
     The objective of the 'insert_one_in_many_collections' function is to insert a single value into multiple collections
-     and objects in a database. The function takes in the name of the database, a list of collection names, an object
+     and objects in a self. The function takes in the name of the self, a list of collection names, an object
      name, and a value to be inserted.
 
     Inputs:
-        - db_name: a string representing the name of the database to insert the value into
+        - db_name: a string representing the name of the self to insert the value into
         - collections: a list of strings representing the names of the collections to insert the value into
         - obj_name: a string representing the name of the object to insert the value into
         - value: any type of value to be inserted into the collections and object
 
     Flow:
-        - Open the database using the '_open_db' function
+        - Open the self using the '_open_db' function
         - For each collection in the list of collections:
-            - Check if the collection and object exist in the database
+            - Check if the collection and object exist in the self
             - Get the count of entries in the collection using the '_count' function
             - If the first entry in the collection exists, append the value to the 'values' key of the object in the
               collection with a new count value
-        - Save the updated database using the '_save_db' function
+        - Save the updated self using the '_save_db' function
 
     Outputs:
         - None
 
     Additional aspects:
-        - The function raises a 'KeyError' if the collection or object does not exist in the database
+        - The function raises a 'KeyError' if the collection or object does not exist in the self
         - The function uses the '_is_value_in' function to check if the first entry in the collection exists
         - The function uses the 'enumerate' function to get the index of each collection in the list of collections
-        - The function raises a 'SaveError' if there is an error while saving the updated database
+        - The function raises a 'SaveError' if there is an error while saving the updated self
     """
     if not isinstance(db_name, str):
         raise KeyError('DB name must be a string')
@@ -185,7 +185,7 @@ def insert_one_in_many_collections(db_name: str, collections: list, obj_name: st
     for collection in collections:
 
         if collection not in DATABASE or obj_name not in DATABASE[collection]:
-            raise KeyError(f'Collection {collection} or object {obj_name} not found in database')
+            raise KeyError(f'Collection {collection} or object {obj_name} not found in self')
 
         count = _count(DATABASE=DATABASE, collection=collection, obj_name=obj_name)
 

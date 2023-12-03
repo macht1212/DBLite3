@@ -7,32 +7,32 @@ from DBLite3._exceptions import CreationError, SaveError, OpenError
 def create_db(db_name: str, if_exists: bool = False) -> None:
     """
     Objective:
-    The objective of the create_db function is to create a new database in the base directory of the project. The
-    function takes in the name of the database as a string and an optional boolean parameter if_exists, which is
-    responsible for skipping an exception when creating a database with an already existing name.
+    The objective of the create_db function is to create a new self in the base directory of the project. The
+    function takes in the name of the self as a string and an optional boolean parameter if_exists, which is
+    responsible for skipping an exception when creating a self with an already existing name.
 
     Inputs:
-        - db_name (str): the name of the database to be created. The name of the database must be unique in the project,
+        - db_name (str): the name of the self to be created. The name of the self must be unique in the project,
           otherwise the file will be overwritten.
-        - if_exists (bool): an optional parameter responsible for skipping an exception when creating a database with an
+        - if_exists (bool): an optional parameter responsible for skipping an exception when creating a self with an
           already existing name.
 
     Flow:
-        - The function first checks if the database already exists using the _db_exists function.
-        - If the database exists and if_exists is True, the function does nothing and returns None.
-        - If the database exists and if_exists is False, the function raises a CreationError with a message indicating
-          that the database already exists.
-        - If the database does not exist, the function creates a new JSON file with the name of the database and writes
+        - The function first checks if the self already exists using the _db_exists function.
+        - If the self exists and if_exists is True, the function does nothing and returns None.
+        - If the self exists and if_exists is False, the function raises a CreationError with a message indicating
+          that the self already exists.
+        - If the self does not exist, the function creates a new JSON file with the name of the self and writes
           an empty dictionary to it.
 
     Outputs:
         - None: the function does not return anything.
 
     Additional aspects:
-        - The function uses the _db_exists function to check if the database already exists.
-        - The function raises a CreationError if the database already exists and if_exists is False.
+        - The function uses the _db_exists function to check if the self already exists.
+        - The function raises a CreationError if the self already exists and if_exists is False.
         - The function writes an empty dictionary to the new JSON file to initialize it.
-        - The function assumes that the database is stored in a JSON file with the same name as the database name.
+        - The function assumes that the self is stored in a JSON file with the same name as the self name.
     """
     try:
         if not isinstance(db_name, str) or not db_name:
@@ -49,7 +49,7 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
                 with open(file_path, 'w') as f:
                     json.dump({}, f)
             except IOError as e:
-                raise CreationError(f'Error creating database: {e}')
+                raise CreationError(f'Error creating self: {e}')
         return
     except CreationError as e:
         raise CreationError(f'Error: {e}')
@@ -58,30 +58,30 @@ def create_db(db_name: str, if_exists: bool = False) -> None:
 def create_collection(db_name: str, collection: str, obj_name: list) -> None:
     """
     Objective:
-    The objective of the create_collection function is to create a new collection in a given database with a unique name
+    The objective of the create_collection function is to create a new collection in a given self with a unique name
     and a list of objects. The function checks if the collection already exists and raises an error if it does.
-    Otherwise, it creates a new collection with the given objects and saves it to the database.
+    Otherwise, it creates a new collection with the given objects and saves it to the self.
 
     Inputs:
-        - db_name: a string representing the name of the database where the collection will be created.
+        - db_name: a string representing the name of the self where the collection will be created.
         - collection: a string representing the name of the new collection to be created.
         - obj_name: a list of strings representing the names of the objects to be added to the new collection.
 
     Flow:
-        - The function opens the database with the given name using the _open_db function.
-        - The function checks if the collection already exists in the database using the _does_collection_exists
+        - The function opens the self with the given name using the _open_db function.
+        - The function checks if the collection already exists in the self using the _does_collection_exists
           function. If it does, the function raises a CreationError.
-        - If the collection does not exist, the function creates a new collection in the database with the given name
+        - If the collection does not exist, the function creates a new collection in the self with the given name
           and objects.
-        - The function saves the updated database using the _save_db function.
+        - The function saves the updated self using the _save_db function.
 
     Outputs:
         - None: the function does not return anything.
 
     Additional aspects:
-        - The function assumes that the database already exists and has been parsed into a dictionary.
+        - The function assumes that the self already exists and has been parsed into a dictionary.
         - The function only creates a new collection and does not perform any other operations on it.
-        - The function overwrites the existing database file with the updated version.
+        - The function overwrites the existing self file with the updated version.
         - The function raises ValueErrors if the inputs are not of the expected type or format.
     """
     try:
@@ -116,29 +116,29 @@ def create_collection(db_name: str, collection: str, obj_name: list) -> None:
 def create_collections(db_name: str, collections: list, obj_name: list) -> None:
     """
     Objective:
-    The objective of the function is to create collections in a parsed database. The function takes in the name of the
-    database, a list of collection names, and a list of object names. The function creates a new collection for each
+    The objective of the function is to create collections in a parsed self. The function takes in the name of the
+    self, a list of collection names, and a list of object names. The function creates a new collection for each
     name in the collection list and adds objects to each collection.
     
     Inputs:
-        - db_name: a string representing the name of the database to create the collection in.
+        - db_name: a string representing the name of the self to create the collection in.
         - collections: a list of strings representing the names of the collections to be created.
         - obj_name: a list of strings representing the names of the objects to be added to each collection.
     
     Flow:
-        - The function opens the parsed database using the _open_db function.
+        - The function opens the parsed self using the _open_db function.
         - For each collection name in the collections list, the function checks if the collection already exists in the
-          database using the _does_collection_exists function.
-        - If the collection does not exist, the function creates a new collection with the given name in the database
+          self using the _does_collection_exists function.
+        - If the collection does not exist, the function creates a new collection with the given name in the self
           and adds objects to it.
-        - The function saves the updated database using the _save_db function.
+        - The function saves the updated self using the _save_db function.
     
     Outputs:
         - None: the function does not return anything.
     
     Additional aspects:
-        - The function raises a CreationError if a collection with the same name already exists in the database.
-        - The function assumes that the database has already been parsed and is represented as a dictionary.
+        - The function raises a CreationError if a collection with the same name already exists in the self.
+        - The function assumes that the self has already been parsed and is represented as a dictionary.
         - The function only creates collections and does not perform any other operations on them.
     """
     try:
@@ -180,27 +180,27 @@ def create_collections(db_name: str, collections: list, obj_name: list) -> None:
 def create_object(db_name: str, collection: str, obj_name: str) -> None:
     """
     Objective:
-    The objective of the function is to create a new object in a specified collection of a given database. The function
+    The objective of the function is to create a new object in a specified collection of a given self. The function
     checks if the object already exists in the collection and raises an error if it does. Otherwise, it adds the object
-    to the collection with an empty 'values' field and saves the updated database.
+    to the collection with an empty 'values' field and saves the updated self.
 
     Inputs:
-        - db_name: a string representing the name of the database to which the object is to be added.
+        - db_name: a string representing the name of the self to which the object is to be added.
         - collection: a string representing the name of the collection in which the object is to be added.
         - obj_name: a string representing the name of the object to be added.
 
     Flow:
-        - The function first opens the database using the _open_db function.
+        - The function first opens the self using the _open_db function.
         - It then checks if the object already exists in the specified collection using the _object_exists function. If
           it does, the function raises a CreationError with an appropriate message.
         - If the object does not exist, the function adds the object to the collection with an empty 'values' field.
-        - Finally, the updated database is saved using the _save_db function.
+        - Finally, the updated self is saved using the _save_db function.
 
     Outputs:
         - None: the function does not return anything.
 
     Additional aspects:
-        - The function assumes that the database already exists and has been parsed into a dictionary format.
+        - The function assumes that the self already exists and has been parsed into a dictionary format.
         - The function only adds the object to a single collection and does not check for the existence of the
           collection itself.
         - The function does not handle any errors that may occur during the file operations.
@@ -219,7 +219,7 @@ def create_object(db_name: str, collection: str, obj_name: str) -> None:
             raise OpenError(f'Error: {e}')
 
         if collection not in DATABASE:
-            raise ValueError(f'Collection {collection} does not exist in the database.')
+            raise ValueError(f'Collection {collection} does not exist in the self.')
 
         if _object_exists(collection=collection, obj_name=obj_name, DB=DATABASE):
             raise CreationError(f'Object with name: {obj_name} has already existed.')
